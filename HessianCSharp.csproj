@@ -1,0 +1,233 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{981C2E02-11B4-49DA-A462-48C9AC1FD095}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Hessiancsharp</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>hessiancsharp</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="burlapcsharp\client\CBurlapMethodCaller.cs" />
+    <Compile Include="burlapcsharp\client\CBurlapProxy.cs" />
+    <Compile Include="burlapcsharp\client\CBurlapProxyFactory.cs" />
+    <Compile Include="burlapcsharp\client\CBurlapProxyStandardImpl.cs" />
+    <Compile Include="burlapcsharp\client\IBurlapProxyStandard.cs" />
+    <Compile Include="burlapcsharp\io\AbstractBurlapInput.cs" />
+    <Compile Include="burlapcsharp\io\AbstractBurlapOutput.cs" />
+    <Compile Include="burlapcsharp\io\CBurlapException.cs" />
+    <Compile Include="burlapcsharp\io\CBurlapInput.cs" />
+    <Compile Include="burlapcsharp\io\CBurlapOutput.cs" />
+    <Compile Include="hessiancsharp\client\CHessianMethodCaller.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\client\CHessianProxy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\client\CHessianProxyFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\client\CHessianProxyStandardImpl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\client\IHessianProxyStandard.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\AbstractDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\AbstractHessianInput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\AbstractHessianOutput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\AbstractSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CArrayDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CArraySerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CBasicDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CBasicSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CCollectionDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CCollectionSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CDateDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CDateSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CDecimalDeserializer.cs" />
+    <Compile Include="hessiancsharp\io\CExceptionDeserializer.cs" />
+    <Compile Include="hessiancsharp\io\CExceptionSerializer.cs" />
+    <Compile Include="hessiancsharp\io\CHessianInput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CHessianException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CHessianOutput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CHessianProtocolConstants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CInputStreamSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CMapDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CMapSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CObjectDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CObjectSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CSerializationConstants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CSerializerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CStringValueDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\io\CStringValueSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\server\CHessianHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\server\CHessianSkeleton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\webserver\CConnection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="hessiancsharp\webserver\CWebServer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="burlapcsharp\server\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
