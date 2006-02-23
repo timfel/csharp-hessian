@@ -31,7 +31,8 @@
 * 2005-08-14 Licence added (By Andre Voltmann)
 * 2005-08-04: SBYTE added (Dimitri Minich)
 * 2005-12-16: CExceptionDeserializer and  CExceptionSerializera dded (Dimitri Minich)
-* 2006-01-03: Support for nullable types by mw
+* 2006-01-03: Support for nullable types (Matthias Wuttke)
+* 2006-02-23: Support for Generic lists (Matthias Wuttke)
 ******************************************************************************************************
 */
 
@@ -215,37 +216,39 @@ namespace hessiancsharp.io
 				{
 					abstractDeserializer = new CMapDeserializer(type);
 				}
-                else if (type.IsGenericType && type.FullName.StartsWith("System.Nullable"))
+                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Nullable))
                 {
-                    // mw BUGFIX: es ist ein normaler Typ, nur nullbar
+                    // nullbarer Typ
                     Type[] args = type.GetGenericArguments();
                     return GetDeserializer(args[0]);
                 }
-				else if (type.IsArray)
-				{
-					abstractDeserializer = new CArrayDeserializer(GetDeserializer(type.GetElementType()));
-				}
-				else if (typeof (IList).IsAssignableFrom(type))
-				{
-					abstractDeserializer = new CCollectionDeserializer(type);
-				}
+                else if (type.IsArray)
+                {
+                    abstractDeserializer = new CArrayDeserializer(GetDeserializer(type.GetElementType()));
+                }
+                else if (typeof(IList).IsAssignableFrom(type) ||
+                    (type.IsGenericType && 
+                    typeof(System.Collections.Generic.List<>).IsAssignableFrom(type.GetGenericTypeDefinition())))
+                {
+                    abstractDeserializer = new CCollectionDeserializer(type);
+                }
                 else if (typeof(Exception).IsAssignableFrom(type))
                 {
                     abstractDeserializer = new CExceptionDeserializer(type);
                 }
-				else
-				{
-					if (m_htCachedDeserializerMap[type.FullName] != null)
-					{
-						abstractDeserializer = (AbstractDeserializer) m_htCachedDeserializerMap[type.FullName];
-					}
-					else
-					{
-						abstractDeserializer = new CObjectDeserializer(type);
-						m_htCachedDeserializerMap.Add(type.FullName, abstractDeserializer);
+                else
+                {
+                    if (m_htCachedDeserializerMap[type.FullName] != null)
+                    {
+                        abstractDeserializer = (AbstractDeserializer)m_htCachedDeserializerMap[type.FullName];
+                    }
+                    else
+                    {
+                        abstractDeserializer = new CObjectDeserializer(type);
+                        m_htCachedDeserializerMap.Add(type.FullName, abstractDeserializer);
 
-					}
-				}
+                    }
+                }
 			}
 			return abstractDeserializer;
 
@@ -436,6 +439,8 @@ namespace hessiancsharp.io
 			if (abstractDeserializer != null)
 				return abstractDeserializer.ReadList(abstractHessianInput, intLength);
 			else
+                // TODO: hier nicht umbedingt eine Array List, sondern Feldinfo befragen
+                // dann ggf. List<XYZ> erzeugen
 				return new CCollectionDeserializer(typeof (ArrayList)).ReadList(
 					abstractHessianInput,
 					intLength);

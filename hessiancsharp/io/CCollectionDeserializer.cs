@@ -37,6 +37,8 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using hessiancsharp.io;
+using System.Collections.Generic;
+using System.Reflection;
 #endregion
 
 namespace hessiancsharp.io
@@ -88,19 +90,46 @@ namespace hessiancsharp.io
 		/// apart from StringCollection - Instances</returns>
 		public override System.Object ReadList(AbstractHessianInput abstractHessianInput, int intListLength)
 		{
-			IList listResult = null;
-			if (m_type == null)
-				listResult = new ArrayList();
-			/*else if (m_type.Equals(typeof(StringCollection)))
-				listResult = new StringCollection();*/
-			else
-				listResult = new ArrayList();
-			abstractHessianInput.AddRef(listResult);
-			while (!abstractHessianInput.IsEnd())
-				listResult.Add(abstractHessianInput.ReadObject());
-			abstractHessianInput.ReadEnd();
-			return listResult;
+            if (m_type != null && IsGenericList(m_type))
+                return ReadGenericList(abstractHessianInput);
+            else
+                return ReadUntypedList(abstractHessianInput);
 		}
+
+        public static bool IsGenericList(Type type)
+        {
+            Type listType = typeof(System.Collections.Generic.List<>);
+            Type genTD = type.GetGenericTypeDefinition();
+            return (listType.IsAssignableFrom(genTD));
+        }
+
+        private Object ReadGenericList(AbstractHessianInput abstractHessianInput)
+        {
+            Type[] args = m_type.GetGenericArguments();
+            Type itemType = args[0];
+            Type listType = typeof(System.Collections.Generic.List<>).MakeGenericType(itemType);
+
+            object list = Activator.CreateInstance(listType);
+            abstractHessianInput.AddRef(list);
+
+            while (!abstractHessianInput.IsEnd())
+            {
+                object item = abstractHessianInput.ReadObject(itemType);
+                listType.InvokeMember("Add", BindingFlags.InvokeMethod, null, list, new object[] { item });
+            }
+            abstractHessianInput.ReadEnd();
+            return list;
+        }
+
+        private Object ReadUntypedList(AbstractHessianInput abstractHessianInput)
+        {
+            IList listResult = new ArrayList();
+            abstractHessianInput.AddRef(listResult);
+            while (!abstractHessianInput.IsEnd())
+                listResult.Add(abstractHessianInput.ReadObject());
+            abstractHessianInput.ReadEnd();
+            return listResult;
+        }
 		
 		/// <summary>
 		/// Reads objects as list
