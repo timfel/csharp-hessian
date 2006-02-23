@@ -30,6 +30,7 @@
 * Last change: 2005-08-14
 * By Andre Voltmann	
 * Licence added.
+* 2006-02-23 Support for deserializing to Generic list types
 ******************************************************************************************************
 */
 #region NAMESPACES

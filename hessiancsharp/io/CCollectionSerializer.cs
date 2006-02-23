@@ -55,6 +55,8 @@ namespace hessiancsharp.io
 		{
 			if (abstractHessianOutput.AddRef(objList))
 				return ;
+
+            // TODO auch generische Listen schreiben
 			
 			ICollection collection = ( ICollection) objList;
 			Type type = objList.GetType();

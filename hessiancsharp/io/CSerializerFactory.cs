@@ -165,6 +165,8 @@ namespace hessiancsharp.io
 			AbstractSerializer abstractSerializer = (AbstractSerializer) m_htSerializerMap[type];
 			if (abstractSerializer == null)
 			{
+                // TODO: Serialisieren von Nullbaren Typen und generischen
+                // Listen
 				if (typeof (IDictionary).IsAssignableFrom(type))
 				{
 					abstractSerializer = new CMapSerializer();
@@ -439,8 +441,6 @@ namespace hessiancsharp.io
 			if (abstractDeserializer != null)
 				return abstractDeserializer.ReadList(abstractHessianInput, intLength);
 			else
-                // TODO: hier nicht umbedingt eine Array List, sondern Feldinfo befragen
-                // dann ggf. List<XYZ> erzeugen
 				return new CCollectionDeserializer(typeof (ArrayList)).ReadList(
 					abstractHessianInput,
 					intLength);
