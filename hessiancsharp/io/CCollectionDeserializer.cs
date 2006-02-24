@@ -99,6 +99,8 @@ namespace hessiancsharp.io
 
         public static bool IsGenericList(Type type)
         {
+            if (!type.IsGenericType)
+                return false;
             Type listType = typeof(System.Collections.Generic.List<>);
             Type genTD = type.GetGenericTypeDefinition();
             return (listType.IsAssignableFrom(genTD));

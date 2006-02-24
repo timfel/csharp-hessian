@@ -218,7 +218,7 @@ namespace hessiancsharp.io
 				{
 					abstractDeserializer = new CMapDeserializer(type);
 				}
-                else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Nullable))
+                else if (type.IsGenericType && typeof(System.Nullable<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
                 {
                     // nullbarer Typ
                     Type[] args = type.GetGenericArguments();
