@@ -3,6 +3,8 @@ HessianC#
 For further information log on to
 http://www.hessiancsharp.org
 
+Bugs:
+UTF8 String
 
 
 **********************************************************************************
