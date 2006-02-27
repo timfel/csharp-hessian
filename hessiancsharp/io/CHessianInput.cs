@@ -785,13 +785,12 @@ namespace hessiancsharp.io
 
 
 							return deserializer.ReadMap(this);
-						}
+						}                            
 						case PROT_REF_TYPE:
 						{
 							int intRefNumber = ParseInt();
 							return m_arrRefs[intRefNumber];
-						}
-						
+						}					  
 						case 'r':
 						{
 							throw new CHessianException("remote type is not implemented");

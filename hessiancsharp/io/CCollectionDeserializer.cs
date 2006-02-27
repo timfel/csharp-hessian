@@ -91,12 +91,14 @@ namespace hessiancsharp.io
 		/// apart from StringCollection - Instances</returns>
 		public override System.Object ReadList(AbstractHessianInput abstractHessianInput, int intListLength)
 		{
+           
             if (m_type != null && IsGenericList(m_type))
                 return ReadGenericList(abstractHessianInput);
             else
                 return ReadUntypedList(abstractHessianInput);
 		}
 
+        
         public static bool IsGenericList(Type type)
         {
             if (!type.IsGenericType)

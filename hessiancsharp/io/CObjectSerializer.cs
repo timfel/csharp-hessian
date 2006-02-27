@@ -92,6 +92,8 @@ namespace hessiancsharp.io
         /// <param name="abstractHessianOutput">HessianOutput - Instance</param>
         public override void WriteObject(object obj, AbstractHessianOutput abstractHessianOutput)
         {
+            if (abstractHessianOutput.AddRef(obj))
+                return;
             Type type = obj.GetType();
             abstractHessianOutput.WriteMapBegin(type.FullName);
             ArrayList serFields = GetSerializableFieldList();

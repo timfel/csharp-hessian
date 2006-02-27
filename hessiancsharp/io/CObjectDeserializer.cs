@@ -101,41 +101,58 @@ namespace hessiancsharp.io
 			return this.ReadMap( abstractHessianInput );
 		}
 
+        /// <summary>
+        /// Reads map
+        /// </summary>
+        /// <param name="abstractHessianInput">HessianInput to read from</param>
+        /// <returns>Read object or null</returns>
+        public override object ReadMap(AbstractHessianInput abstractHessianInput)
+        {
+            #if COMPACT_FRAMEWORK
+            object result = Activator.CreateInstance(this.m_type);				
+            #else
+            object result = Activator.CreateInstance(this.m_type.Assembly.FullName, this.m_type.FullName).Unwrap();
+            //			object result = Activator.CreateInstance(this.m_type);
+            //			object result = null;
+            #endif
+
+
+            return ReadMap(abstractHessianInput, result);
+   
+        }
+
+
 		/// <summary>
 		/// Reads map
 		/// </summary>
 		/// <param name="abstractHessianInput">HessianInput to read from</param>
 		/// <returns>Read object or null</returns>
-		public override object ReadMap(AbstractHessianInput abstractHessianInput)
+        public object ReadMap(AbstractHessianInput abstractHessianInput, Object result)
         {
-#if COMPACT_FRAMEWORK
-            object result = Activator.CreateInstance(this.m_type);				
-#else
-            object result = Activator.CreateInstance(this.m_type.Assembly.FullName, this.m_type.FullName).Unwrap();
-            //			object result = Activator.CreateInstance(this.m_type);
-            //			object result = null;
-#endif
+
             
-            abstractHessianInput.AddRef(result);
+            int refer = abstractHessianInput.AddRef(result);
 
 			while (! abstractHessianInput.IsEnd()) 
 			{
 				object objKey = abstractHessianInput.ReadObject();
-                IDictionary deserFields = GetDeserializableFields();				
-                FieldInfo field = (FieldInfo)deserFields[objKey];
+                IDictionary deserFields = GetDeserializableFields();
+				FieldInfo field = null;
+                field = (FieldInfo)deserFields[objKey];
+                
 
-
-				if (field != null) 
-				{
-					object objFieldValue = abstractHessianInput.ReadObject(field.FieldType );
-					field.SetValue(result, objFieldValue);
+                if (field != null)
+                {
+                    object objFieldValue = abstractHessianInput.ReadObject(field.FieldType);
+                    field.SetValue(result, objFieldValue);
                 }
                 else
                 {
                     // mw BUGFIX!!!
                     object ignoreme = abstractHessianInput.ReadObject();
-                } 
-			}
+                }
+                
+            }
 			abstractHessianInput.ReadEnd();
 			return result;
 		}
