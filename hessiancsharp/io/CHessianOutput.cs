@@ -30,6 +30,7 @@
 * Last change: 2005-08-14
 * By Andre Voltmann	
 * Licence added.
+* 2006-03-06 PrintString UTF8 bugfix - Matthias
 ******************************************************************************************************
 */
 
@@ -764,7 +765,8 @@ namespace hessiancsharp.io
 		public void PrintString(char[] arrData, int intOffset, int intLength) 
 		{			
             byte[] utfData = System.Text.Encoding.UTF8.GetBytes(arrData, intOffset, intLength);
-            m_srOutput.Write(utfData, intOffset, intLength);
+            // m_srOutput.Write(utfData, intOffset, intLength);
+            m_srOutput.Write(utfData, 0, utfData.Length);
 		}
 
 		
