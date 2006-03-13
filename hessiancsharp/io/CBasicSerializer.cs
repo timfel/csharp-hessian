@@ -101,7 +101,7 @@ namespace hessiancsharp.io
 					break;
 				case DATE:					
                     DateTime dt = (DateTime)obj;
-                    const long timeShift = 62135600400000;
+                    const long timeShift = 62135596800000;
                     long javaTime = dt.Ticks / 10000 - timeShift;
                     abstractHessianOutput.WriteUTCDate(javaTime);
                     break; 
