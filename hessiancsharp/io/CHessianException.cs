@@ -57,6 +57,20 @@ namespace hessiancsharp.io
         {
         }
 
+        private bool _faultWrapper;
+
+        /// <summary>
+        /// Returns true if this exception only serves as a wrapper for
+        /// a fault returned by the distant Hessian endpoint.
+        /// The fault is then contained in the InnerException property.
+        /// </summary>
+        public bool FaultWrapper
+        {
+            get { return _faultWrapper; }
+            set { _faultWrapper = value; }
+        }
+	
+
 		#endregion
 	}
 }

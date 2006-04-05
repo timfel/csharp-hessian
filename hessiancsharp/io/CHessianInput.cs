@@ -857,7 +857,10 @@ namespace hessiancsharp.io
 
 			if (intTag == PROT_REPLY_FAULT) 
 			{
-				throw PrepareFault();
+				//throw PrepareFault();
+                CHessianException wrapper = new CHessianException("received fault", PrepareFault());
+                wrapper.FaultWrapper = true;
+                throw wrapper;
 			} 
 			else 
 			{

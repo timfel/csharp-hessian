@@ -220,7 +220,11 @@ namespace hessiancsharp.client
 			{
 				if (e.GetType().Equals(typeof(CHessianException)))
 				{
-					throw e;
+                    if ((e as CHessianException).FaultWrapper)
+                        // nur ein Wrapper
+                        throw e.InnerException;
+                    else
+					    throw e;
 				} 
 				else
 				{
