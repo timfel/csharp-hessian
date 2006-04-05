@@ -131,7 +131,8 @@ namespace hessiancsharp.io
 				case DATE:					
                     long javaTime = abstractHessianInput.ReadUTCDate();
                     const long timeShift = 62135596800000;
-                    DateTime dt = new DateTime((javaTime + timeShift) * 10000);
+                    DateTime dt = new DateTime((javaTime + timeShift) * 10000, DateTimeKind.Utc);
+                    dt = dt.ToLocalTime(); // der Einfachheit halber
                     return dt; 
 
 				default:
