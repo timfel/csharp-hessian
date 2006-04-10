@@ -3,8 +3,17 @@ HessianC#
 For further information log on to
 http://www.hessiancsharp.org
 
-Bugs:
-UTF8 String
+
+
+**********************************************************************************
+Release Version 1.3.1
+Release Date: 2006-04-10
+**********************************************************************************
+- Bugfix object references
+- Bugfix UTF8 String
+- Support generics
+- Exceptionhandling improved
+
 
 
 **********************************************************************************
