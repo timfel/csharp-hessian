@@ -11,7 +11,7 @@
     </CopyProjectUncPath>
     <CopyProjectOption>0</CopyProjectOption>
     <ProjectView>ProjectFiles</ProjectView>
-    <DeployDeviceID>E282E6BE-C7C3-4ece-916A-88FB1CF8AF3C</DeployDeviceID>
+    <DeployDeviceID>AE1FD546-ECB8-4553-B0AA-53E129544859</DeployDeviceID>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <EnableASPDebugging>false</EnableASPDebugging>
