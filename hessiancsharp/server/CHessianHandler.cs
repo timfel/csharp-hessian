@@ -71,7 +71,7 @@ namespace hessiancsharp.server
             {
                 context = ctx;
                 Stream inStream = ctx.Request.InputStream;
-                Stream outStream = ctx.Response.OutputStream;
+                MemoryStream outStream = new MemoryStream();
 
                 ctx.Response.BufferOutput = true;
                 ctx.Response.ContentType = "text/xml";
@@ -86,7 +86,12 @@ namespace hessiancsharp.server
                 }
 
                 m_objectSkeleton.invoke(inHessian, outHessian);
-
+                byte [] arrData = outStream.ToArray();
+                int intLength = arrData.Length;
+                //Set length
+                ctx.Response.AppendHeader("Content-Length", intLength.ToString());
+                //Write stream
+                ctx.Response.OutputStream.Write(arrData, 0, intLength);
                 return;
             }
             catch (Exception ex)

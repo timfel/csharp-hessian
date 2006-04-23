@@ -86,13 +86,12 @@ namespace hessiancsharp.webserver
 		{
 			//Get references to sockets input & output streams			
 			m_stream = new NetworkStream(m_socket, FileAccess.ReadWrite, true);
-
 			MemoryStream memoryStream = new MemoryStream();
 			//Reads the Header of HTTP Message
 			try {
 				ReadHeaders();
 			} catch (NotSupportedException e) {
-				SendError(500, e.StackTrace);
+                SendError(500, "Close");
 				m_socket.Close();
 				m_stream.Close();
 				return;
@@ -103,11 +102,11 @@ namespace hessiancsharp.webserver
 			/// Proxy object			
 			CHessianSkeleton objectSkeleton = null;
 			try {
-				objectSkeleton = new CHessianSkeleton(m_apiType, m_Service);
+                objectSkeleton = new CHessianSkeleton(m_apiType, m_Service);
 				objectSkeleton.invoke(inHessian, tempOutHessian);
-				WriteResponse(memoryStream.GetBuffer());
+                WriteResponse(memoryStream.ToArray());
 			} catch (Exception e) {
-				SendError(500, e.StackTrace);
+                SendError(500, "Close");
 			} finally {
 				m_socket.Close();
 				m_stream.Close();
@@ -120,7 +119,7 @@ namespace hessiancsharp.webserver
 		/// </summary>
 		private void WriteResponse(byte[] content_) 
 		{
-			SendOk(m_stream);
+            SendOk(m_stream, content_!=null?content_.Length:0);
 			m_stream.Write(content_, 0, content_.Length);
 		}
 
@@ -138,21 +137,22 @@ namespace hessiancsharp.webserver
 		/// <param name="errno"></param>
 		/// <param name="errString"></param>
 		protected void SendError(int errno, string errString) {
-			SendString(string.Format("HTTP/1.1 {0} {1}\r\n", errno, errString));
-			SendString(string.Format("Date:{0}\r\n", DateTime.Now));
-			SendString(string.Format("Server:{0}\r\n", serverID));
-			SendString("Content-Type: text/html; charset=utf-8\r\n");
-			SendString("Connection: close\r\n");
+            SendString(string.Format("HTTP/1.1 {0} {1}\r\n", errno, errString));
+            SendString(string.Format("Date:{0}\r\n", DateTime.Now));
+            SendString(string.Format("Server:{0}\r\n", serverID));
+            SendString("Content-Type: text/html; charset=utf-8\r\n");
+            SendString("Connection: close\r\n");
 		}
 
 		/// <summary>
 		/// It puts all lines for ok-Header in m_stream
 		/// </summary>
-		protected void SendOk(Stream ns_) {
+		protected void SendOk(Stream ns_, int intLength) {
 			SendString("HTTP/1.1 200 OK\r\n");
 			SendString(string.Format("Date:{0}\r\n", DateTime.Now));
 			SendString(string.Format("Server:{0}\r\n", serverID));
-			SendString("Content-Type: text/html; charset=utf-8\r\n\r\n");
+            SendString(string.Format("Content-Length: {0}\r\n", intLength));
+			SendString("Content-Type: text/xml\r\n\r\n");
 		}
 
 		/// <summary>
