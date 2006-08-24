@@ -84,13 +84,20 @@ namespace hessiancsharp.io
 				
 			}
 			abstractHessianInput.AddRef(dictionary);
-			while (! abstractHessianInput.IsEnd()) 
+			while (! abstractHessianInput.IsEnd())
 			{
-				dictionary.Add(abstractHessianInput.ReadObject(), abstractHessianInput.ReadObject());
+				Object key = abstractHessianInput.ReadObject();
+				Object value = abstractHessianInput.ReadObject();
+				if (!dictionary.Contains(key)) 
+				{
+					dictionary.Add(key, value);
+				}
 			}
+			
 			abstractHessianInput.ReadEnd();
 			return dictionary;
 		}
+		
 		/// <summary>
 		/// Reads map from input 
 		/// </summary>
