@@ -54,6 +54,10 @@ namespace hessiancsharp.client
 		/// Instance to communicate with the Hessian - server
 		/// </summary>
 		private CHessianMethodCaller m_methodCaller = null;
+        /// <summary>
+        /// Methods of Interface type
+        /// </summary>
+        private MethodInfo[] m_methods = null;
 		#endregion
 
 		#region CONSTRUCTORS
@@ -67,6 +71,7 @@ namespace hessiancsharp.client
 		{
 			this.m_proxyType = proxyType;	
 			this.m_methodCaller = new CHessianMethodCaller(hessianProxyFactory,uri);
+            this.m_methods = proxyType.GetMethods();
 		}
 
         public CHessianProxyStandardImpl(Type proxyType, CHessianProxyFactory hessianProxyFactory, Uri uri, string username, string password)
@@ -74,6 +79,7 @@ namespace hessiancsharp.client
         {
             this.m_proxyType = proxyType;
             this.m_methodCaller = new CHessianMethodCaller(hessianProxyFactory, uri, username, password);
+            this.m_methods = proxyType.GetMethods();
         }
 
 		#endregion
@@ -176,7 +182,20 @@ namespace hessiancsharp.client
 		/// <returns>MethodInfo - Instance</returns>
 		private MethodInfo GetMethodInfoForMethodBase(IMethodCallMessage methodMessage)
 		{
-			return this.m_proxyType.GetMethod(methodMessage.MethodName, CHessianMethodCaller.GetArgTypes(methodMessage.Args));
+            if (IsMethodNameUnique(methodMessage.MethodName))
+                return this.m_proxyType.GetMethod(methodMessage.MethodName);
+            else
+                return this.m_proxyType.GetMethod(methodMessage.MethodName, CHessianMethodCaller.GetArgTypes(methodMessage.Args));
 		}
+
+        private bool IsMethodNameUnique(string name)
+        {
+            int count = 0;
+            foreach (MethodInfo mi in m_methods)
+                if (mi.Name.Equals(name))
+                    count++;
+            return count < 2;
+        }
+
 	}
 }
