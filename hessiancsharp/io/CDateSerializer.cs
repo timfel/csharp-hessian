@@ -47,7 +47,24 @@ namespace hessiancsharp.io
 		private const long ticksDifference = 621355968000000000;
 		private const int ticksDivider = 10000;
 		#endregion
+
+
+
 		#region PUBLIC_METHODS
+        /// <summary>
+        /// Converts a C# DateTime object to a long value
+        /// that represents the java.util.Date.getTime() value.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static long MakeJavaDate(DateTime dt)
+        {
+            const long timeShift = 62135596800000;
+            long javaTime = dt.ToUniversalTime().Ticks / 10000 - timeShift;
+            return javaTime;
+        }
+
+
 		/// <summary>
 		/// Writes Instance of the DateTime class
 		/// </summary>
@@ -65,7 +82,8 @@ namespace hessiancsharp.io
 				abstractHessianOutput.WriteUTCDate(((((DateTime) objDate).Ticks - ticksDifference) / ticksDivider) - (long) TimeZone.CurrentTimeZone.GetUtcOffset(((DateTime) objDate)).TotalMilliseconds);
 				abstractHessianOutput.WriteMapEnd();
 				*/
-				abstractHessianOutput.WriteUTCDate(((DateTime)objDate).ToFileTimeUtc());
+                abstractHessianOutput.WriteUTCDate(MakeJavaDate((DateTime)objDate));
+				//abstractHessianOutput.WriteUTCDate(((DateTime)objDate).ToFileTimeUtc());
 			}
 		}
 		#endregion

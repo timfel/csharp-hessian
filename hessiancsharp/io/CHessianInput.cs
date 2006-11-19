@@ -466,8 +466,16 @@ namespace hessiancsharp.io
 					String strType = ReadType();
 					return m_serializerFactory.ReadMap(this, strType);
 				}
-				case PROT_DATE_TYPE:
-					return DateTime.FromFileTimeUtc(ParseLong());
+                case PROT_DATE_TYPE:
+                {
+                    /*
+                     * Eine Windows-Dateizeit ist ein 64-Bit-Wert, der die Anzahl 
+                     * von 100-Nanosekunden-Intervallen darstellt, die seit 1. Januar 1601,
+                     * 00:00 u. Z. koordinierter Weltzeit (Coordinated Universal Time, UTC)
+                     * verstrichen sind.  */
+                    long javaTime = ParseLong();
+                    return CDateDeserializer.MakeCSharpDate(javaTime);
+                }
 				case PROT_REF_TYPE: 
 				{
 					int intRefNumber = ParseInt();

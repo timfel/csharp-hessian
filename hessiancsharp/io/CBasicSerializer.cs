@@ -101,8 +101,7 @@ namespace hessiancsharp.io
 					break;
 				case DATE:					
                     DateTime dt = (DateTime)obj;
-                    const long timeShift = 62135596800000;
-                    long javaTime = dt.ToUniversalTime().Ticks / 10000 - timeShift;
+                    long javaTime = CDateSerializer.MakeJavaDate(dt);
                     abstractHessianOutput.WriteUTCDate(javaTime);
                     break; 
 

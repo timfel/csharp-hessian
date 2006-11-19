@@ -47,6 +47,20 @@ namespace hessiancsharp.io
 	public class CDateDeserializer:AbstractDeserializer
 	{
 		#region PUBLIC_METHODS
+        /// <summary>
+        /// Makes a C# DateTime object from a Java ticks value
+        /// from java.util.Date.getTime().
+        /// </summary>
+        /// <param name="javaDate"></param>
+        /// <returns></returns>
+        public static DateTime MakeCSharpDate(long javaDate)
+        {
+            const long timeShift = 62135596800000;
+            DateTime dt = new DateTime((javaDate + timeShift) * 10000, DateTimeKind.Utc);
+            dt = dt.ToLocalTime(); // der Einfachheit halber
+            return dt;
+        }
+
 		/// <summary>
 		/// Reads date
 		/// </summary>
@@ -54,7 +68,9 @@ namespace hessiancsharp.io
 		/// <returns>DateTime - Instance</returns>
 		public override object ReadObject(AbstractHessianInput abstractHessianInput)
 		{
-			return DateTime.FromFileTimeUtc( abstractHessianInput.ReadUTCDate());
+            long javaTime = abstractHessianInput.ReadUTCDate();
+            return MakeCSharpDate(javaTime);
+			//return DateTime.FromFileTimeUtc( abstractHessianInput.ReadUTCDate());
 		}
 		#endregion
 
