@@ -186,20 +186,24 @@ namespace hessiancsharp.io
 				{
 					abstractSerializer = new CArraySerializer();
 				}
-				else
-				{
-					if (m_htCachedSerializerMap[type.FullName] != null)
-					{
-						abstractSerializer = (AbstractSerializer) m_htCachedSerializerMap[type.FullName];
-					}
-					else
-					{
-						abstractSerializer = new CObjectSerializer(type);
-						m_htCachedSerializerMap.Add(type.FullName, abstractSerializer);
+                else if (type.IsEnum)
+                {
+                    abstractSerializer = new CEnumSerializer();
+                }
+                else
+                {
+                    if (m_htCachedSerializerMap[type.FullName] != null)
+                    {
+                        abstractSerializer = (AbstractSerializer)m_htCachedSerializerMap[type.FullName];
+                    }
+                    else
+                    {
+                        abstractSerializer = new CObjectSerializer(type);
+                        m_htCachedSerializerMap.Add(type.FullName, abstractSerializer);
 
-					}
+                    }
 
-				}
+                }
 			}
 			return abstractSerializer;
 		}
@@ -214,22 +218,24 @@ namespace hessiancsharp.io
 			AbstractDeserializer abstractDeserializer = (AbstractDeserializer) m_htDeserializerMap[type];
 			if (abstractDeserializer == null)
 			{
-				if (typeof (IDictionary).IsAssignableFrom(type))
-				{
-					abstractDeserializer = new CMapDeserializer(type);
-				}
+                if (typeof(IDictionary).IsAssignableFrom(type))
+                {
+                    abstractDeserializer = new CMapDeserializer(type);
+                }
                 else if (type.IsGenericType && typeof(System.Nullable<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
                 {
                     // nullbarer Typ
                     Type[] args = type.GetGenericArguments();
                     return GetDeserializer(args[0]);
                 }
+                else if (type.IsEnum)
+                    return new CEnumDeserializer(type);
                 else if (type.IsArray)
                 {
                     abstractDeserializer = new CArrayDeserializer(GetDeserializer(type.GetElementType()));
                 }
                 else if (typeof(IList).IsAssignableFrom(type) ||
-                    (type.IsGenericType && 
+                    (type.IsGenericType &&
                     typeof(System.Collections.Generic.List<>).IsAssignableFrom(type.GetGenericTypeDefinition())))
                 {
                     abstractDeserializer = new CCollectionDeserializer(type);
