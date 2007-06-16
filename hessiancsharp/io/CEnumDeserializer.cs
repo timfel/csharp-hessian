@@ -83,7 +83,11 @@ namespace hessiancsharp.io
 				case 'r':
 					throw new CHessianException("remote type is not implemented!");
 			}
+            return ReadMap(abstractHessianInput);
+		}
 
+        public override object ReadMap(AbstractHessianInput abstractHessianInput)
+        {
             string enumName = null;
             while (!abstractHessianInput.IsEnd())
             {
@@ -96,7 +100,7 @@ namespace hessiancsharp.io
             abstractHessianInput.ReadMapEnd();
 
             return Enum.Parse(e_type, enumName);
-		}
+        }
 
 		#endregion
 	}
