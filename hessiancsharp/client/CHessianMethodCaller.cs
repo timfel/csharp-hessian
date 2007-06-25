@@ -228,7 +228,7 @@ namespace hessiancsharp.client
 				} 
 				else
 				{
-					throw new CHessianException("Exception by proxy call\n" + e.ToString()+ e.Message);
+					throw new CHessianException("Exception by proxy call\n" + e.ToString()+ e.Message, e);
 				}
 					
 			} 
