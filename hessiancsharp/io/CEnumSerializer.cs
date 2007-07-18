@@ -56,13 +56,20 @@ namespace hessiancsharp.io
 			if (abstractHessianOutput.AddRef(obj))
 				return;
 
-            Type enumType = obj.GetType();
-            string name = Enum.GetName(enumType, obj);
-
-            abstractHessianOutput.WriteMapBegin(enumType.FullName);
-        	abstractHessianOutput.WriteObject("name");
-        	abstractHessianOutput.WriteObject(name);
-			abstractHessianOutput.WriteMapEnd();
+            if (obj == null)
+            {
+                abstractHessianOutput.WriteNull();
+            }
+            else
+            {
+                Type enumType = obj.GetType();
+                string name = //Enum.GetName(enumType, obj);
+                    ((Enum)obj).ToString(); // das geht auch mit .NET Mobile
+                abstractHessianOutput.WriteMapBegin(enumType.FullName);
+                abstractHessianOutput.WriteObject("name");
+                abstractHessianOutput.WriteObject(name);
+                abstractHessianOutput.WriteMapEnd();
+            }
 		}
 		#endregion
 	}

@@ -99,7 +99,7 @@ namespace hessiancsharp.io
             }
             abstractHessianInput.ReadMapEnd();
 
-            object result = Enum.Parse(e_type, enumName);
+            object result = Enum.Parse(e_type, enumName, false);
             abstractHessianInput.AddRef(result);
             return result;
         }
