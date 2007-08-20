@@ -2,7 +2,7 @@
 ***************************************************************************************************** 
 * HessianCharp - The .Net implementation of the Hessian Binary Web Service Protocol (www.caucho.com) 
 * Copyright (C) 2004-2005  by D. Minich, V. Byelyenkiy, A. Voltmann
-* http://www.hessiancsharp.com
+* http://www.hessiancsharp.org
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public
@@ -22,293 +22,107 @@
 * http://www.gnu.org/licenses/lgpl.html
 * or in the license.txt file in your source directory.
 ******************************************************************************************************  
-* You can find all contact information on http://www.hessiancsharp.com	
+* You can find all contact information on http://www.hessiancsharp.org	
 ******************************************************************************************************
 *
 *
 ******************************************************************************************************
-* Last change: 2005-08-14
-* By Andre Voltmann	
-* Licence added.
+* Last change: 2006-05-02
+* By Dimitri Minich	
+* Initial creation.
 ******************************************************************************************************
 */
-#region NAMESPACES
+
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using System.Net;
-using System.Net.Sockets;
-using System.Text.RegularExpressions;
-using System.Threading;
-#endregion
 
-namespace hessiancsharp.webserver 
+namespace hessiancsharp.webserver
 {
-	/// <summary>
-	/// An embeded tiny webserver.
-	/// 
-	/// CWebServer web = new CWebServer(5667,"/hallo/test/math.hessian",typeof(CMath));
-	/// web.Paranoid = true;
-	///	web.AcceptClient("[\\d\\s]");	
-	/// web.Run();
-	/// or
-	/// IMath myMath = new Math();
-	/// CWebServer web = new CWebServer(5667,"/hallo/test/math.hessian",typeof(IMath),myMath);
-	/// web.Paranoid = true;
-	/// web.AcceptClient("127.0.0.1");
-	/// web.Run();
-	/// </summary>
-	public class CWebServer {
-		#region CLASS_FIELDS
+    abstract public class CWebServer
+    {
+        protected HttpListener Listener;
+        protected bool IsStarted = false;
+        public event delReceiveWebRequest ReceiveWebRequest;
 
-		private int m_port;
-		private Type m_apiType = null;
-		private Object m_Service;
-		private Socket m_serverSock;
-		private string m_serviceUrl;
-		private IList m_AcceptIPAddressList = new ArrayList();
-		private IList m_DenyIPAddressList = new ArrayList();
-		private bool m_paranoid_IP = true;
-		private bool m_ready = false;
-		private Thread runningThread = null;
-		
-		#endregion
+        public CWebServer()
+        {
 
-		#region CONSTRUCTORS
+        }
 
-		/// <summary>
-		/// Constructor. Creates a web server at the specified port number for the specified Service.
-		/// </summary>
-		/// <param name="port_">Portnumber to them the server listening</param>
-		/// <param name="serviceUrl_">The serviceUrl "/test/myservice.hessian"</param>
-		/// <param name="apiType_">The Type of Serviceobject, may not be an interface</param>	
-		/// <exception cref="ArgumentException"/>	
-		public CWebServer(int port_, string serviceUrl_, Type apiType_) 
-		{
-			m_serviceUrl = serviceUrl_;
-			m_port = port_;
-			m_apiType = apiType_;
-			if(apiType_.IsInterface || apiType_.IsAbstract) {
-				throw new ArgumentException("apiType_ should be a class!");	
-			} else {
-				m_Service = Activator.CreateInstance(apiType_);		
-			}							
-		}
 
-		/// <summary>
-		/// Constructor. Creates a web server at the specified port number for the specified Service.
-		/// </summary>
-		/// <param name="port_">Portnumber to them the server listening</param>
-		/// <param name="serviceUrl_">The serviceUrl "/test/myservice.hessian"</param>
-		/// <param name="apiType_">The Type of Serviceobject</param>
-		/// <param name="service_">Servicobject</param>		
-		public CWebServer(int port_, string serviceUrl_, Type apiType_, Object service_) 
-		{
-			m_serviceUrl = serviceUrl_;
-			m_port = port_;
-			m_apiType = apiType_;
-			m_Service = service_;
-		}
-		#endregion
 
-		#region PROPORTIES
-		/// <summary>
-		/// The portnumber
-		/// </summary>
-		public int Port 
-		{
-			get { return m_port; }
-		}
-		/// <summary>
-		/// The Service Object
-		/// </summary>
-		public Object Service 
-		{
-			get { return m_Service; }
-		}
+        /// <summary>
+        /// Starts the Web Service
+        /// </summary>
+        /// <param name="UrlBase">
+        /// A Uri that acts as the base that the server is listening on.
+        /// Format should be: http://127.0.0.1:8080/ or http://127.0.0.1:8080/somevirtual/
+        /// Note: the trailing backslash is required! For more info see the
+        /// HttpListener.Prefixes property on MSDN.
+        /// </param>
+        public void Start(string UrlBase)
+        {
+            // *** Already running - just leave it in place
+            if (this.IsStarted)
+                return;
 
-		/// <summary>
-		/// The Api Type 
-		/// </summary>
-		public Type TypeApi 
-		{
-			get { return m_apiType; }
-		}
+            if (this.Listener == null)
+            {
+                this.Listener = new HttpListener();
+            }
 
-		/// <summary>
-		/// informational, is the web server running
-		/// </summary>
-		public bool Running 
-		{
-			get { return m_ready; }
-		}
+            this.Listener.Prefixes.Add(UrlBase);
+            this.IsStarted = true;
+            this.Listener.Start();
+            IAsyncResult result = this.Listener.BeginGetContext(new AsyncCallback(WebRequestCallback), this.Listener);
 
-		/// <summary>
-		/// The Service Url "/test/myservice.hessian"
-		/// </summary>
-		public string ServiceUrl 
-		{
-			get { return m_serviceUrl; }
-		}
-		
-		/// <summary>
-		/// Switch client filtering on/off.
-		/// see AcceptClient(string)
-		/// see DenyClient(string)
-		/// </summary>
-		public bool Paranoid 
-		{
-			get { return m_paranoid_IP; }
-			set { m_paranoid_IP = value; }
-		}
-		#endregion
+        }
 
-		#region PUBLIC_METHODS
-		
-		/// <summary>
-		/// listen to port and get HTTP calls
-		/// </summary>
-		public void Run() 
-		{
-			if (runningThread != null) 
-			{
-				runningThread.Abort();
-				m_serverSock.Close();
-				m_ready = false;
-			}
-			runningThread = new Thread(new ThreadStart(RunConnectionThread));
-			runningThread.IsBackground = true;
-			runningThread.Start();
-		}
 
-		/// <summary>
-		/// stop web server
-		/// </summary>
-		public void Stop() 
-		{
-			if (runningThread != null) 
-			{
-				try 
-				{
-					runningThread.Abort();
-				} 
-				finally 
-				{
-					runningThread = null;
-					m_serverSock.Close();
-					m_serverSock = null;
-					m_ready = false;
-				}
-			}
-		}
 
-		/// <summary>
-		///Add an IP address to the list of accepted clients. The parameter can
-		///contain '*' as wildcard character, e.g. "192.168.*.*", just a regular expression. 
-		///You must call Paranoid = true in order for this to have any effect.
-		/// </summary>
-		public void AcceptClient(string regexpr_) 
-		{			
-			if (!m_AcceptIPAddressList.Contains(regexpr_)) 
-			{
-				m_AcceptIPAddressList.Add(regexpr_);
-			}			
-		}
+        /// <summary>
+        /// Shut down the Web Service
+        /// </summary>
+        public void Stop()
+        {
+            if (Listener != null)
+            {
+                this.Listener.Close();
+                this.Listener = null;
+                this.IsStarted = false;
+            }
+        }
 
-		/// <summary>
-		///Add an IP address to the list of denied clients. The parameter can
-		///contain '*' as wildcard character, e.g. "192.168.*.*", just a regular expression. 
-		///You must call Paranoid = true in order for this to have any effect.
-		/// </summary>
-		public void DenyClient(string regexpr_) 
-		{		
-			if (!m_DenyIPAddressList.Contains(regexpr_)) 
-			{
-				m_DenyIPAddressList.Add(regexpr_);
-			}		
-		}
-		#endregion		
 
-		/// <summary>
-		/// the threadstart of the web server. called by Run()
-		/// </summary>
-		protected void RunConnectionThread() {
-			//Establish the listen socket			
-			m_serverSock = new Socket(AddressFamily.InterNetwork,
-			                          SocketType.Stream, ProtocolType.Tcp);
 
-			IPEndPoint ipe = new IPEndPoint(IPAddress.Any, m_port);
 
-			m_serverSock.Bind(ipe);
-			m_ready = true;
 
-			while (true) {
-				Socket sock = null;
-				try {
-					sock = AcceptConnection();
-				} catch (NotSupportedException) {
-					//TODO: Log deny ip
-					sock.Close();
-					sock = null;
-				}
-				if (sock != null) {
-					CConnection conn = new CConnection(sock, m_serviceUrl, m_apiType, m_Service);
-					conn.ProcessRequest();
-				}
-			}
-		}
-	
-		/// <summary>
-		/// Checks incoming connections to see if they should be allowed.
-		/// If not in paranoid mode, always returns true.
-		/// </summary>
-		/// <param name="s">The socket to inspect</param>
-		/// <returns>Whether the connection should be allowed</returns>
-		protected bool AllowConnection(Socket s)
-		{
-			if (!Paranoid)
-			{
-				return true;
-			}
+        protected void WebRequestCallback(IAsyncResult result)
+        {
+            if (this.Listener == null)
+                return;
 
-			string addresAsStr = ((IPEndPoint) s.RemoteEndPoint).Address.ToString();
+            // Get out the context object
+            HttpListenerContext context = this.Listener.EndGetContext(result);
 
-			int l = m_DenyIPAddressList.Count;			
-			for (int i = 0; i < l; i++)
-			{
-				Regex ipPattern=new Regex(Convert.ToString(m_DenyIPAddressList[i]));
-				if(ipPattern.IsMatch(addresAsStr)) {
-					return false;
-				}								
-			}
-			l = m_AcceptIPAddressList.Count;
-			for (int i = 0; i < l; i++)
-			{
-				string reg = Convert.ToString(m_AcceptIPAddressList[i]);
-				Regex ipPattern=new Regex(reg);
-				if(ipPattern.IsMatch(addresAsStr)) 
-				{
-					return true;
-				}					
-			}
-			return false;
-		}
+            // *** Immediately set up the next context
+            this.Listener.BeginGetContext(new AsyncCallback(WebRequestCallback), this.Listener);
+            if (this.ReceiveWebRequest != null)
+                this.ReceiveWebRequest(context);
+            this.ProcessRequest(context);
+        }
 
-		/// <summary>
-		/// accept a connection and return a Socket
-		/// </summary>
-		/// <returns></returns>
-		private Socket AcceptConnection() 
-		{
-			m_serverSock.Listen(1);
-			Socket s = m_serverSock.Accept();
-			IPEndPoint ep = (IPEndPoint) s.RemoteEndPoint;
-			IPAddress remoteIp = ep.Address;
-			if(!AllowConnection(s)) 
-			{
-				throw new NotSupportedException("The client with this ip is not supported: "
-					+ remoteIp.ToString());
-			}			
-			return s;
-		}
-	}
+
+
+        /// <summary>
+        /// Overridable method that can be used to implement a custom hnandler
+        /// </summary>
+        /// <param name="Context"></param>
+        protected virtual void ProcessRequest(HttpListenerContext Context)
+        {
+
+        }
+    }
 }
