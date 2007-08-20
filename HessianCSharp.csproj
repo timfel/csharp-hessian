@@ -203,15 +203,10 @@
     <Compile Include="hessiancsharp\server\CHessianSkeleton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hessiancsharp\webserver\CConnection.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="hessiancsharp\webserver\CHessianWebServer.cs" />
     <Compile Include="hessiancsharp\webserver\CWebServer.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="burlapcsharp\server\" />
