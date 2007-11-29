@@ -37,6 +37,7 @@ using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
+using System.Net;
 
 namespace hessiancsharp.client
 {
@@ -74,11 +75,11 @@ namespace hessiancsharp.client
             this.m_methods = proxyType.GetMethods();
 		}
 
-        public CHessianProxyStandardImpl(Type proxyType, CHessianProxyFactory hessianProxyFactory, Uri uri, string username, string password)
+        public CHessianProxyStandardImpl(Type proxyType, CHessianProxyFactory hessianProxyFactory, Uri uri, string username, string password, WebProxy webproxy)
             : base(typeof(IHessianProxyStandard))
         {
             this.m_proxyType = proxyType;
-            this.m_methodCaller = new CHessianMethodCaller(hessianProxyFactory, uri, username, password);
+            this.m_methodCaller = new CHessianMethodCaller(hessianProxyFactory, uri, username, password, webproxy);
             this.m_methods = proxyType.GetMethods();
         }
 

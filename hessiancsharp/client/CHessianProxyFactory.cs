@@ -36,6 +36,7 @@
 #region NAMESPACES
 using System;
 using hessiancsharp.io;
+using System.Net;
 #endregion
 
 namespace hessiancsharp.client 
@@ -52,6 +53,7 @@ namespace hessiancsharp.client
 
         private string m_password;
         private string m_username;
+        private WebProxy m_webproxy;
 
         #endregion
 
@@ -61,13 +63,19 @@ namespace hessiancsharp.client
             m_username = null;
             m_password = null;
         }
+
         public CHessianProxyFactory(string username, string password)
         {
             m_username = username;
             m_password = password;
-
         }
 
+        public CHessianProxyFactory(string username, string password, WebProxy webproxy)
+        {
+            m_username = username;
+            m_password = password;
+            m_webproxy = webproxy;
+        }
 		#endregion
 
 		#region PROPERTIES
@@ -113,23 +121,10 @@ namespace hessiancsharp.client
 
 			#if COMPACT_FRAMEWORK
 			// do CF stuff
-			throw new CHessianException("not supported in compact version");
-			
+			throw new CHessianException("not supported in compact version");		
 			#else
-            if ((m_username == null) && (m_password == null))
-            {
-
-
-
-
-                return new CHessianProxyStandardImpl(type, this, new Uri(strUrl)).GetTransparentProxy();
-            }
-            else
-            {
-                return new CHessianProxyStandardImpl(type, this, new Uri(strUrl), m_username, m_password).GetTransparentProxy();
-            }
-			#endif
-			
+            return new CHessianProxyStandardImpl(type, this, new Uri(strUrl), m_username, m_password, m_webproxy).GetTransparentProxy();
+			#endif			
 		}
 
 		#endregion

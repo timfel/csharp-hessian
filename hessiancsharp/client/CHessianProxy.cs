@@ -83,6 +83,11 @@ namespace hessiancsharp.client
         {
             this.m_methodCaller = new CHessianMethodCaller(hessianProxyFactory, uri, username, password);
         }
+
+        internal CHessianProxy(CHessianProxyFactory hessianProxyFactory, Uri uri, string username, string password, WebProxy webproxy)
+        {
+            this.m_methodCaller = new CHessianMethodCaller(hessianProxyFactory, uri, username, password, webproxy);
+        }
         #endregion
 
         

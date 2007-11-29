@@ -71,6 +71,7 @@ namespace hessiancsharp.client
 		private Uri m_uriHessianServiceUri;
         
         private NetworkCredential m_credentials = null;
+        private WebProxy m_proxy = null; // null = system default
 
 		#endregion
 		#region PROPERTIES
@@ -103,6 +104,14 @@ namespace hessiancsharp.client
             this.m_CHessianProxyFactory = hessianProxyFactory;
             this.m_uriHessianServiceUri = uri;
             this.m_credentials = new System.Net.NetworkCredential(username, password);
+        }
+        
+        public CHessianMethodCaller(CHessianProxyFactory hessianProxyFactory, Uri uri, string username, string password, WebProxy proxy)
+        {
+            this.m_CHessianProxyFactory = hessianProxyFactory;
+            this.m_uriHessianServiceUri = uri;
+            this.m_credentials = new System.Net.NetworkCredential(username, password);
+            this.m_proxy = proxy;
         }
 
 
@@ -146,6 +155,7 @@ namespace hessiancsharp.client
                 }
 #endif
 
+                webRequest.Proxy = m_proxy;
                 webRequest.ContentType = "text/xml";
 				webRequest.Method = "POST";
 
