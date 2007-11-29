@@ -87,6 +87,10 @@ namespace hessiancsharp.io
 
         private IDictionary m_deserializers;
 
+        /// <summary>
+        /// total number of bytes read from the stream
+        /// </summary>
+        private int m_totalBytesRead = 0;
 
 		#endregion
 
@@ -215,6 +219,7 @@ namespace hessiancsharp.io
 			else 
 			{
 				intResult = this.m_srInput.ReadByte();
+                m_totalBytesRead++;
 			}
 			return intResult;
 		}
@@ -1305,6 +1310,7 @@ namespace hessiancsharp.io
 					sublen = length;
 
 				sublen = m_srInput.Read(buffer, offset, sublen);
+                m_totalBytesRead += sublen;
 				offset += sublen;
 				intReadLength += sublen;
 				length -= sublen;
@@ -1340,7 +1346,10 @@ namespace hessiancsharp.io
 			return new HessianInputStream(this);
 		}
 
-		
+        public int GetTotalBytesRead()
+        {
+            return m_totalBytesRead;
+        }
 		
 
 		#endregion

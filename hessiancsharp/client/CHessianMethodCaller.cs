@@ -127,6 +127,7 @@ namespace hessiancsharp.client
        
 		public object DoHessianMethodCall(object[] arrMethodArgs, MethodInfo methodInfo)
 		{
+            DateTime start = DateTime.Now;
 			Type[] argumentTypes = GetArgTypes(arrMethodArgs);
 			Stream sInStream = null;
 			Stream sOutStream = null;
@@ -224,7 +225,12 @@ namespace hessiancsharp.client
                 System.IO.BufferedStream bStream = new BufferedStream(sInStream, 2048);
                 AbstractHessianInput hessianInput = this.GetHessianInput(bStream);
 #endif
-                return hessianInput.ReadReply(methodInfo.ReturnType);
+                object result = hessianInput.ReadReply(methodInfo.ReturnType);
+
+                CHessianLog.AddLogEntry(methodInfo.Name, start, DateTime.Now,
+                    ((CHessianInput)hessianInput).GetTotalBytesRead(), memoryStream.Length);
+
+                return result;
 			} 
 			catch (Exception e) 
 			{

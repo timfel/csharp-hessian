@@ -102,6 +102,7 @@
     <Compile Include="burlapcsharp\io\CBurlapException.cs" />
     <Compile Include="burlapcsharp\io\CBurlapInput.cs" />
     <Compile Include="burlapcsharp\io\CBurlapOutput.cs" />
+    <Compile Include="hessiancsharp\client\CHessianLog.cs" />
     <Compile Include="hessiancsharp\client\CHessianMethodCaller.cs">
       <SubType>Code</SubType>
     </Compile>
