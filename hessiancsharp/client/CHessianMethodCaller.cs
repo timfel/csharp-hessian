@@ -30,6 +30,9 @@
 * Last change: 
 * 2005-08-14 Licence added  (Andre Voltmann)
 * 2005-12-16 Session Cookie added (Dimitri Minich)
+* 2007-12-08 Proxy support (Matthias Wuttke)
+* 2007-12-14 GZIP compression (Matthias Wuttke)
+* 2008-01-20 Keep-Alive retry (Matthias Wuttke)
 * 
 ******************************************************************************************************
 */
@@ -47,6 +50,9 @@ using System.Web.SessionState;
 
 
 using hessiancsharp.io;
+using System.IO.Compression;
+using System.Text;
+using System.Net.Sockets;
 
 namespace hessiancsharp.client
 {
@@ -57,7 +63,7 @@ namespace hessiancsharp.client
 	{
         #region Constants
         public const string CUSTOM_HEADER_KEY = "__CUSTOM_HEADERS";
-
+        public const bool USE_GZIP_COMPRESSION = true;
         #endregion
 
 		#region CLASS_FIELDS
@@ -127,141 +133,180 @@ namespace hessiancsharp.client
        
 		public object DoHessianMethodCall(object[] arrMethodArgs, MethodInfo methodInfo)
 		{
-            DateTime start = DateTime.Now;
-			Type[] argumentTypes = GetArgTypes(arrMethodArgs);
-			Stream sInStream = null;
-			Stream sOutStream = null;
-	
-			try 
-			{
-				WebRequest webRequest =  this.OpenConnection(m_uriHessianServiceUri);
-#if COMPACT_FRAMEWORK
-#else
+            Stream sInStream = null, sOutStream = null;
+            try
+            {
+                int totalBytesRead;
+                DateTime start = DateTime.Now;
+
+                byte[] request = GetRequestBytes(arrMethodArgs, methodInfo);
+
+                object result;
                 try
                 {
-                    //webRequest.Headers
-                    HttpWebRequest req = webRequest as HttpWebRequest;
-                    //Preserve cookies to allow for session affinity between remote server and client
-                    if (HttpContext.Current.Session["SessionCookie"] == null)
-                    {
-                        HttpContext.Current.Session.Add("SessionCookie", new CookieContainer());
-                    }
-                    req.CookieContainer = (CookieContainer)HttpContext.Current.Session["SessionCookie"];
+                    WebRequest webRequest = SendRequest(request, out sOutStream);
+                    result = ReadReply(webRequest, methodInfo, out sInStream, out totalBytesRead);
                 }
-                catch
+                catch (Exception e)
                 {
+                    /*
+                    SocketException se = e.InnerException as SocketException;
+                    WebException we = e as WebException;
+                    if ((se != null && se.SocketErrorCode == SocketError.ConnectionAborted)
+                        || (we != null && we.Status == WebExceptionStatus.KeepAliveFailure))
+                     */
                     
-                 //   throw e;
-                    //log4net.LogManager.GetLogger(GetType()).Error("Error in setting cookie on request", e);
+                    if (!(e is CHessianException))
+                    {
+                        // retry once (Keep-Alive connection closed?)
+                        WebRequest webRequest = SendRequest(request, out sOutStream);
+                        result = ReadReply(webRequest, methodInfo, out sInStream, out totalBytesRead);
+                    }
+                    else
+                        throw e; // rethrow
                 }
-#endif
 
-                webRequest.Proxy = m_proxy;
-                webRequest.ContentType = "text/xml";
-				webRequest.Method = "POST";
+                CHessianLog.AddLogEntry(methodInfo.Name, start, DateTime.Now, totalBytesRead, request.Length);
+                return result;
+            }
+            catch (CHessianException he)
+            {
+                if (he.FaultWrapper)
+                    // wrapper for a received exception
+                    throw he.InnerException;
+                else
+                    throw he; // rethrow
+            }
+            finally
+            {
+                if (sInStream != null)
+                    sInStream.Close();
+                if (sOutStream != null)
+                    sOutStream.Close();
+            }
+		}
+
+        /// <summary>
+        /// Reads and decodes the reply.
+        /// </summary>
+        /// <param name="webRequest"></param>
+        /// <returns></returns>
+        private object ReadReply(WebRequest webRequest, MethodInfo methodInfo, out Stream sInStream, out int totalBytesRead)
+        {
+            HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+            if (webResponse.StatusCode != HttpStatusCode.OK)
+                ReadAndThrowHttpFault(webResponse);
+            sInStream = webResponse.GetResponseStream();
+
+            if (webResponse.ContentEncoding.ToLower().Contains("gzip"))
+                sInStream = new GZipStream(sInStream, CompressionMode.Decompress);
+            else if (webResponse.ContentEncoding.ToLower().Contains("deflate"))
+                sInStream = new DeflateStream(sInStream, CompressionMode.Decompress);
+
+#if COMPACT_FRAMEWORK                
+			AbstractHessianInput hessianInput = this.GetHessianInput(sInStream);
+#else
+            BufferedStream bStream = new BufferedStream(sInStream, 4096);
+            AbstractHessianInput hessianInput = this.GetHessianInput(bStream);
+#endif
+            object result = hessianInput.ReadReply(methodInfo.ReturnType);
+            totalBytesRead = ((CHessianInput)hessianInput).GetTotalBytesRead();
+            return result;
+        }
+
+        /// <summary>
+        /// Sends the web request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        private WebRequest SendRequest(byte[] request, out Stream sOutStream)
+        {
+            WebRequest webRequest = PrepareWebRequest(request.Length);
+            sOutStream = webRequest.GetRequestStream();
+            sOutStream.Write(request, 0, request.Length);
+            sOutStream.Flush();
+            return webRequest;
+        }
+
+        /// <summary>
+        /// Translates the method call to a request byte array.
+        /// </summary>
+        /// <param name="arrMethodArgs"></param>
+        /// <param name="methodInfo"></param>
+        /// <returns></returns>
+        private byte[] GetRequestBytes(object[] arrMethodArgs, MethodInfo methodInfo)
+        {
+            Type[] argumentTypes = GetArgTypes(arrMethodArgs);
+            MemoryStream memoryStream = new MemoryStream(4096);
+            CHessianOutput cHessianOutput = this.GetHessianOutput(memoryStream);
+            string strMethodName = methodInfo.Name;
+            if (m_CHessianProxyFactory.IsOverloadEnabled)
+            {
+                if (arrMethodArgs != null)
+                    strMethodName = strMethodName + "__" + arrMethodArgs.Length;
+                else
+                    strMethodName = strMethodName + "__0";
+            }
+            cHessianOutput.Call(strMethodName, arrMethodArgs);
+            return memoryStream.ToArray();
+        }
+
+        /// <summary>
+        /// Reads a HTTP fault and throws a CHessianException.
+        /// </summary>
+        /// <param name="webResponse"></param>
+        private void ReadAndThrowHttpFault(WebResponse webResponse)
+        {
+            StringBuilder sb = new StringBuilder();
+            int chTemp;
+
+            Stream sInStream = webResponse.GetResponseStream();
+            if (sInStream != null)
+            {
+                while ((chTemp = sInStream.ReadByte()) >= 0)
+                    sb.Append((char)chTemp);
+                sInStream.Close();
+            }
+
+            throw new CHessianException(sb.ToString());
+        }
+
+        /// <summary>
+        /// Prepares a WebRequest object for communication
+        /// with the Hessian server.
+        /// </summary>
+        /// <returns></returns>
+        private WebRequest PrepareWebRequest(long contentLength)
+        {
+            WebRequest webRequest = OpenConnection(m_uriHessianServiceUri);
 
 #if COMPACT_FRAMEWORK
 #else
-                //Add custom headers
-                if ((HttpContext.Current != null) && (HttpContext.Current.Session != null))
-                {
-                    AddCustomHeadersToRequest(webRequest, HttpContext.Current.Session);
-                }
+            //webRequest.Headers
+            HttpWebRequest req = webRequest as HttpWebRequest;
+
+            // mw: gzip compression
+            if (USE_GZIP_COMPRESSION)
+                req.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+
+            //Preserve cookies to allow for session affinity between remote server and client
+            if (HttpContext.Current != null && HttpContext.Current.Session != null)
+            {
+                if (HttpContext.Current.Session["SessionCookie"] == null)
+                    HttpContext.Current.Session.Add("SessionCookie", new CookieContainer());
+                req.CookieContainer = (CookieContainer)HttpContext.Current.Session["SessionCookie"];
+                AddCustomHeadersToRequest(webRequest, HttpContext.Current.Session);
+            }
 #endif
-                MemoryStream memoryStream = new MemoryStream(2048);
 
-				CHessianOutput cHessianOutput = this.GetHessianOutput(memoryStream);
-				string strMethodName = methodInfo.Name;
-				if (m_CHessianProxyFactory.IsOverloadEnabled) 
-				{
-					if (arrMethodArgs != null) 
-					{
-						strMethodName = strMethodName + "__" + arrMethodArgs.Length;
-					} 
-					else 
-					{
-						strMethodName = strMethodName + "__0";
-					}
-				}
+            webRequest.Proxy = m_proxy;
+            webRequest.ContentType = "text/xml";
+            if (contentLength > -1)
+                webRequest.ContentLength = contentLength;
+            webRequest.Method = "POST";
 
-				cHessianOutput.Call(strMethodName, arrMethodArgs);
-
-				try 
-				{
-					webRequest.ContentLength = memoryStream.ToArray().Length;
-					sOutStream = webRequest.GetRequestStream();
-					memoryStream.WriteTo(sOutStream);
-
-				} 
-				catch (Exception e) 
-				{
-					throw new CHessianException("Exception by sending request to the service with URI:\n" +
-						this.URI.ToString() + "\n" + e.Message);
-				}
-
-
-				sOutStream.Flush();
-				sOutStream.Close();
-				HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
-				if (webResponse.StatusCode !=  HttpStatusCode.OK) 
-				{
-					System.Text.StringBuilder sb = new System.Text.StringBuilder();
-					int chTemp;
-					sInStream = webResponse.GetResponseStream();
-
-					if (sInStream != null) 
-					{
-						while ((chTemp = sInStream.ReadByte()) >= 0)
-							sb.Append((char) chTemp);
-
-						sInStream.Close();
-					}
-					throw new CHessianException(sb.ToString());
-				}
-                sInStream = webResponse.GetResponseStream();
-#if COMPACT_FRAMEWORK                
-				AbstractHessianInput hessianInput = this.GetHessianInput(sInStream);
-#else                
-                System.IO.BufferedStream bStream = new BufferedStream(sInStream, 2048);
-                AbstractHessianInput hessianInput = this.GetHessianInput(bStream);
-#endif
-                object result = hessianInput.ReadReply(methodInfo.ReturnType);
-
-                CHessianLog.AddLogEntry(methodInfo.Name, start, DateTime.Now,
-                    ((CHessianInput)hessianInput).GetTotalBytesRead(), memoryStream.Length);
-
-                return result;
-			} 
-			catch (Exception e) 
-			{
-				if (e.GetType().Equals(typeof(CHessianException)))
-				{
-                    if ((e as CHessianException).FaultWrapper)
-                        // nur ein Wrapper
-                        throw e.InnerException;
-                    else
-					    throw e;
-				} 
-				else
-				{
-					throw new CHessianException("Exception by proxy call\n" + e.ToString()+ e.Message, e);
-				}
-					
-			} 
-			finally 
-			{
-				if (sInStream != null) 
-				{
-					sInStream.Close();
-				}
-				if (sOutStream != null) 
-				{
-					sOutStream.Close();
-				}
-			}
-		}
-
-        
+            return webRequest;
+        }
 
 		/// <summary>
 		/// Returns array with types of the instance from 
