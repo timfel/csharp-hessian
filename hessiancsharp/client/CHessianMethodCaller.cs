@@ -158,9 +158,18 @@ namespace hessiancsharp.client
                     
                     if (!(e is CHessianException))
                     {
-                        // retry once (Keep-Alive connection closed?)
-                        WebRequest webRequest = SendRequest(request, out sOutStream);
-                        result = ReadReply(webRequest, methodInfo, out sInStream, out totalBytesRead);
+                        try
+                        {
+                            // retry once (Keep-Alive connection closed?)
+                            WebRequest webRequest = SendRequest(request, out sOutStream);
+                            result = ReadReply(webRequest, methodInfo, out sInStream, out totalBytesRead);
+                        }
+                        catch (Exception e2)
+                        {
+                            // retry again (last time)
+                            WebRequest webRequest = SendRequest(request, out sOutStream);
+                            result = ReadReply(webRequest, methodInfo, out sInStream, out totalBytesRead);
+                        }
                     }
                     else
                         throw e; // rethrow
