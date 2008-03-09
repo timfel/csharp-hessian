@@ -95,19 +95,21 @@ namespace hessiancsharp.io
 		{
 			if (intLength >= 0)
 			{
-				Object[] arrResult = createArray(intLength);
+                // mw bugfix
+                //Object[] arrResult = createArray(intLength);
+                Array arrResult = createArray(intLength);
 				
 				abstractHessianInput.AddRef(arrResult);
 				
 				if (m_componentType != null)
 				{
-					for (int i = 0; i < arrResult.Length; i++)
-						arrResult[i] = abstractHessianInput.ReadObject(m_componentType);
+                    for (int i = 0; i < arrResult.Length; i++)
+                        arrResult.SetValue(abstractHessianInput.ReadObject(m_componentType), i);
 				}
 				else
 				{
 					for (int i = 0; i < arrResult.Length; i++)
-						arrResult[i] = abstractHessianInput.ReadObject();
+						arrResult.SetValue(abstractHessianInput.ReadObject(), i);
 				}
 				
 				abstractHessianInput.ReadListEnd();
@@ -129,10 +131,11 @@ namespace hessiancsharp.io
 				}
 				
 				abstractHessianInput.ReadListEnd();
-				
-				Object[] arrResult = createArray(colList.Count);
-				for (int i = 0; i < arrResult.Length; i++)
-					arrResult[i] = colList[i];
+
+                //Object[] arrResult = createArray(colList.Count);
+                Array arrResult = createArray(colList.Count);
+                for (int i = 0; i < colList.Count; i++)
+                    arrResult.SetValue(colList[i], i);
 				return arrResult;
 			}
 		}
@@ -171,10 +174,12 @@ namespace hessiancsharp.io
 		/// </summary>
 		/// <param name="intLength">Length of the array</param>
 		/// <returns>Array-Instance</returns>
-		protected internal virtual Object[] createArray(int intLength)
+		protected internal virtual Array createArray(int intLength)
 		{
 			if (m_componentType != null)
-				return (Object[]) Array.CreateInstance(m_componentType, intLength);
+                // mw bugfix
+				return Array.CreateInstance(m_componentType, intLength);
+				//return (Object[]) Array.CreateInstance(m_componentType, intLength);
 			else
 				return new Object[intLength];
 		}

@@ -104,6 +104,15 @@ namespace hessiancsharp.io
             return result;
         }
 
+        /// <summary>
+        /// Returns the enum type.
+        /// </summary>
+        /// <returns></returns>
+        public override Type GetOwnType()
+        {
+            return e_type;
+        }
+
 		#endregion
 	}
 
