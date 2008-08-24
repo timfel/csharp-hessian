@@ -73,10 +73,11 @@ namespace hessiancsharp.io
 				{
 					for (int i = 0; i<fields.Length; i++)
 					{
-						if (!this.m_alFields.Contains(fields[i])) 
-						{
-							this.m_alFields.Add(fields[i]);
-						}
+                        if ((fields[i].Attributes & FieldAttributes.NotSerialized) == 0)
+						    if (!this.m_alFields.Contains(fields[i])) 
+						    {
+							    this.m_alFields.Add(fields[i]);
+						    }
 					}
 				}
 				
