@@ -30,6 +30,8 @@
 * Last change: 2005-08-14
 * By Andre Voltmann	
 * Licence added.
+* 
+* 2009-05-31: mwuttke, min/max utc ticks
 ******************************************************************************************************
 */
 
@@ -46,6 +48,10 @@ namespace hessiancsharp.io
 	/// </summary>
 	public class CDateDeserializer:AbstractDeserializer
 	{
+
+        private const long MIN_UTC_TICKS = 0L;
+        private const long MAX_UTC_TICKS = 3155378939999999999L;
+
 		#region PUBLIC_METHODS
         /// <summary>
         /// Makes a C# DateTime object from a Java ticks value
@@ -56,7 +62,14 @@ namespace hessiancsharp.io
         public static DateTime MakeCSharpDate(long javaDate)
         {
             const long timeShift = 62135596800000;
-            DateTime dt = new DateTime((javaDate + timeShift) * 10000, DateTimeKind.Utc);
+            long ticks = (javaDate + timeShift) * 10000;
+
+            if (ticks < MIN_UTC_TICKS)
+                ticks = MIN_UTC_TICKS;
+            if (ticks > MAX_UTC_TICKS)
+                ticks = MAX_UTC_TICKS;
+
+            DateTime dt = new DateTime(ticks, DateTimeKind.Utc);
             dt = dt.ToLocalTime(); // der Einfachheit halber
             return dt;
         }
