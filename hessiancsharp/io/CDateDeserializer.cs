@@ -69,9 +69,17 @@ namespace hessiancsharp.io
             if (ticks > MAX_UTC_TICKS)
                 ticks = MAX_UTC_TICKS;
 
-            DateTime dt = new DateTime(ticks, DateTimeKind.Utc);
-            dt = dt.ToLocalTime(); // der Einfachheit halber
-            return dt;
+            try
+            {
+                DateTime dt = new DateTime(ticks, DateTimeKind.Utc);
+                dt = dt.ToLocalTime(); // der Einfachheit halber
+                return dt;
+            }
+            catch (Exception e)
+            {
+                // "Ticks müssen sich zwischen DateTime.MinValue.Ticks und DateTime.MaxValue.Ticks befinden."
+                return new DateTime(0, 0, 0);
+            }
         }
 
 		/// <summary>

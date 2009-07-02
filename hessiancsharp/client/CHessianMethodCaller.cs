@@ -50,9 +50,9 @@ using System.Web.SessionState;
 
 
 using hessiancsharp.io;
-using System.IO.Compression;
 using System.Text;
 using System.Net.Sockets;
+using System.IO.Compression;
 
 namespace hessiancsharp.client
 {
@@ -359,6 +359,7 @@ namespace hessiancsharp.client
             if (this.m_credentials != null)
             {
                 request.Credentials = this.m_credentials;
+                request.PreAuthenticate = true;
             }
             return request;
 		}
