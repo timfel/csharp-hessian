@@ -53,11 +53,12 @@ namespace hessiancsharp.io
 		/// <param name="abstractHessianOutput">Instance of the hessian output</param>
 		public override void WriteObject(object obj, AbstractHessianOutput abstractHessianOutput)
 		{
-            /* keine Referenzen auf Enums
-			if (abstractHessianOutput.AddRef(obj))
+            // immer den Referenzzähler hochzählen!
+            // (manche enums mit nullable funktionieren nicht)
+            object unrefobj = new object();
+            if (abstractHessianOutput.AddRef(unrefobj))
 				return;
-             */
-
+            
             if (obj == null)
             {
                 abstractHessianOutput.WriteNull();
