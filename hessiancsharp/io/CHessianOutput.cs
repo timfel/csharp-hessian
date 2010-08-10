@@ -634,10 +634,11 @@ namespace hessiancsharp.io
 		/// <param name="intValue">he integer value to write</param>
 		public override void WriteRef(int intValue) 
 		{
+            // mw: << und >> waren hier verwechselt!!!!!!
 			m_srOutput.WriteByte((byte) PROT_REF_TYPE);
-			m_srOutput.WriteByte((byte) (intValue << 24));
-			m_srOutput.WriteByte((byte) (intValue << 16));
-			m_srOutput.WriteByte((byte) (intValue << 8));
+			m_srOutput.WriteByte((byte) (intValue >> 24));
+			m_srOutput.WriteByte((byte) (intValue >> 16));
+			m_srOutput.WriteByte((byte) (intValue >> 8));
 			m_srOutput.WriteByte((byte) intValue);
 		}
 
@@ -663,11 +664,11 @@ namespace hessiancsharp.io
 				int t_ref = (int) m_htRefs[objReference];
 				int value = t_ref;
 				WriteRef(value);
-				return true;
+                return true;
 			} 
 			else 
 			{
-				m_htRefs.Add(objReference,m_htRefs.Count);
+                m_htRefs.Add(objReference, m_htRefs.Count);
 				return false;
 			}
 
