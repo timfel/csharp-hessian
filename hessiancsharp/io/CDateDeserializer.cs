@@ -32,12 +32,14 @@
 * Licence added.
 * 
 * 2009-05-31: mwuttke, min/max utc ticks
+* 2011-03-31: mwuttke, Java UTC converter
 ******************************************************************************************************
 */
 
 #region NAMESPACES
 using System;
 using System.Reflection;
+using hessiancsharp.util;
 #endregion
 
 
@@ -49,9 +51,6 @@ namespace hessiancsharp.io
 	public class CDateDeserializer:AbstractDeserializer
 	{
 
-        private const long MIN_UTC_TICKS = 0L;
-        private const long MAX_UTC_TICKS = 3155378939999999999L;
-
 		#region PUBLIC_METHODS
         /// <summary>
         /// Makes a C# DateTime object from a Java ticks value
@@ -61,25 +60,7 @@ namespace hessiancsharp.io
         /// <returns></returns>
         public static DateTime MakeCSharpDate(long javaDate)
         {
-            const long timeShift = 62135596800000;
-            long ticks = (javaDate + timeShift) * 10000;
-
-            if (ticks < MIN_UTC_TICKS)
-                ticks = MIN_UTC_TICKS;
-            if (ticks > MAX_UTC_TICKS)
-                ticks = MAX_UTC_TICKS;
-
-            try
-            {
-                DateTime dt = new DateTime(ticks, DateTimeKind.Utc);
-                dt = dt.ToLocalTime(); // der Einfachheit halber
-                return dt;
-            }
-            catch (Exception e)
-            {
-                // "Ticks müssen sich zwischen DateTime.MinValue.Ticks und DateTime.MaxValue.Ticks befinden."
-                return new DateTime(0, 0, 0);
-            }
+            return JavaUtcConverter.ConvertJavaUtcTicksToLocalDateTime(javaDate);
         }
 
 		/// <summary>
@@ -91,7 +72,6 @@ namespace hessiancsharp.io
 		{
             long javaTime = abstractHessianInput.ReadUTCDate();
             return MakeCSharpDate(javaTime);
-			//return DateTime.FromFileTimeUtc( abstractHessianInput.ReadUTCDate());
 		}
 		#endregion
 

@@ -27,6 +27,7 @@
 *
 *
 ******************************************************************************************************
+* Last change: 2011-03-31; mwuttke; Java UTC Date Conversion
 * Last change: 2005-08-14
 * By Andre Voltmann	
 * Licence added.
@@ -34,6 +35,7 @@
 */
 #region NAMESPACES
 using System;
+using hessiancsharp.util;
 #endregion
 
 namespace hessiancsharp.io
@@ -43,12 +45,6 @@ namespace hessiancsharp.io
 	/// </summary>
 	public class CDateSerializer:AbstractSerializer
 	{
-		#region CLASS_FIELDS
-		private const long ticksDifference = 621355968000000000;
-		private const int ticksDivider = 10000;
-		#endregion
-
-
 
 		#region PUBLIC_METHODS
         /// <summary>
@@ -59,33 +55,24 @@ namespace hessiancsharp.io
         /// <returns></returns>
         public static long MakeJavaDate(DateTime dt)
         {
-            const long timeShift = 62135596800000;
-            long javaTime = dt.ToUniversalTime().Ticks / 10000 - timeShift;
-            return javaTime;
+            return JavaUtcConverter.ConvertLocalDateTimeToJavaUtcTicks(dt);
         }
-
 
 		/// <summary>
 		/// Writes Instance of the DateTime class
 		/// </summary>
 		/// <param name="objDate">Instance of the DateTime class</param>
 		/// <param name="abstractHessianOutput">HessianOutput - Stream</param>
-		public override void  WriteObject(Object objDate, AbstractHessianOutput abstractHessianOutput)
+		public override void WriteObject(Object objDate, AbstractHessianOutput abstractHessianOutput)
 		{
 			if (objDate == null)
 				abstractHessianOutput.WriteNull();
 			else
 			{
-				/*Type type = objDate.GetType();
-				abstractHessianOutput.WriteMapBegin(type.FullName);
-				abstractHessianOutput.WriteString("value");
-				abstractHessianOutput.WriteUTCDate(((((DateTime) objDate).Ticks - ticksDifference) / ticksDivider) - (long) TimeZone.CurrentTimeZone.GetUtcOffset(((DateTime) objDate)).TotalMilliseconds);
-				abstractHessianOutput.WriteMapEnd();
-				*/
                 abstractHessianOutput.WriteUTCDate(MakeJavaDate((DateTime)objDate));
-				//abstractHessianOutput.WriteUTCDate(((DateTime)objDate).ToFileTimeUtc());
 			}
 		}
 		#endregion
+
 	}
 }
