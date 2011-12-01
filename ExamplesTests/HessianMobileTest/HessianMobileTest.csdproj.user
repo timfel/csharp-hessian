@@ -1,0 +1,55 @@
+<VisualStudioProject>
+    <ECSHARP>
+        <Build>
+            <Settings
+                DeploymentDevice = "Windows CE Emulator"
+                ReferencePath = "E:\projekte\hessian\c#\trunk\HessianNet\HessianCSharp\bin\Debug\"
+            >
+                <Platform Name = "Windows CE" />
+                <Config
+                    Name = "Debug|Windows CE"
+                    EnableASPDebugging = "false"
+                    EnableASPXDebugging = "false"
+                    EnableUnmanagedDebugging = "false"
+                    EnableSQLServerDebugging = "false"
+                    RemoteDebugEnabled = "true"
+                    RemoteDebugMachine = ""
+                    StartAction = "Project"
+                    StartArguments = ""
+                    StartPage = ""
+                    StartProgram = ""
+                    StartURL = ""
+                    StartWorkingDirectory = ""
+                    StartWithIE = "true"
+                    SelectedDevice = "Windows CE Emulator"
+                    DeploymentPlatform = "Windows CE"
+                />
+                <Config
+                    Name = "Release|Windows CE"
+                    EnableASPDebugging = "false"
+                    EnableASPXDebugging = "false"
+                    EnableUnmanagedDebugging = "false"
+                    EnableSQLServerDebugging = "false"
+                    RemoteDebugEnabled = "true"
+                    RemoteDebugMachine = ""
+                    StartAction = "Project"
+                    StartArguments = ""
+                    StartPage = ""
+                    StartProgram = ""
+                    StartURL = ""
+                    StartWorkingDirectory = ""
+                    StartWithIE = "true"
+                    SelectedDevice = "Windows CE Emulator"
+                    DeploymentPlatform = "Windows CE"
+                />
+            </Settings>
+        </Build>
+        <OtherProjectSettings
+            CopyProjectDestinationFolder = ""
+            CopyProjectUncPath = ""
+            CopyProjectOption = "0"
+            ProjectView = "ProjectFiles"
+        />
+    </ECSHARP>
+</VisualStudioProject>
+

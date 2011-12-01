@@ -1,0 +1,156 @@
+<VisualStudioProject>
+    <ECSHARP
+        ProjectType = "Local"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "1.0"
+        ProjectGuid = "{6427E335-FFA3-4F7F-8189-FCC2775E82F7}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "HessianMobileTest"
+                AssemblyOriginatorKeyFile = ""
+                DelaySign = "false"
+                OutputType = "Exe"
+                OutputFileFolder = "\Program Files\HessianMobileTest"
+                RootNamespace = "HessianMobileTest"
+                StartupObject = ""
+            >
+                <Platform Name = "Windows CE" />
+                <Config
+                    Name = "Debug|Windows CE"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "0"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    Optimize = "false"
+                    OutputPath = "bin\Debug\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release|Windows CE"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "0"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    Optimize = "true"
+                    OutputPath = "bin\Release\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Platform = "Windows CE"
+                    Name = "MSCorLib"
+                    AssemblyName = "mscorlib"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE"
+                    Name = "System"
+                    AssemblyName = "System"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE"
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE"
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE"
+                    Name = "Hessianmobileclient"
+                    AssemblyName = "Hessianmobileclient"
+                />
+                <Reference
+                    Platform = "Windows CE-Designer"
+                    Name = "System.CF.Design"
+                    AssemblyName = "System.CF.Design"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE-Designer"
+                    Name = "System.CF.Design.UI"
+                    AssemblyName = "System.CF.Design.UI"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE-Designer"
+                    Name = "System.CF.Windows.Forms"
+                    AssemblyName = "System.CF.Windows.Forms"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE-Designer"
+                    Name = "System.CF.Drawing"
+                    AssemblyName = "System.CF.Drawing"
+                    Private = "False"
+                />
+                <Reference
+                    Platform = "Windows CE-Designer"
+                    Name = "System"
+                    AssemblyName = "System"
+                    Private = "False"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "hessiancsharp\mobiletest\IHessianTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "hessiancsharp\mobiletest\MobileTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "hessiancsharp\mobiletest\ParamObject.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "hessiancsharp\mobiletest\ParamObjectBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "hessiancsharp\mobiletest\Test.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+            </Include>
+        </Files>
+    </ECSHARP>
+</VisualStudioProject>
+
