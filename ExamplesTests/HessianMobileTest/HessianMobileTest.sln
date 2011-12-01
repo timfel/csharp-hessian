@@ -3,7 +3,7 @@ Project("{20D4826A-C6FA-45DB-90F4-C717570B9F32}") = "HessianMobileTest", "Hessia
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{20D4826A-C6FA-45DB-90F4-C717570B9F32}") = "HessianCSharpMobile", "..\..\HessianCSharp\HessianCSharpMobile.csdproj", "{02937109-A6AC-4E43-AB03-766506493E6D}"
+Project("{20D4826A-C6FA-45DB-90F4-C717570B9F32}") = "HessianCSharpMobile", "..\..\HessianCSharpMobile.csdproj", "{02937109-A6AC-4E43-AB03-766506493E6D}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

@@ -3,7 +3,7 @@
         <Build>
             <Settings
                 DeploymentDevice = "Windows CE Emulator"
-                ReferencePath = "E:\projekte\hessian\c#\trunk\HessianNet\HessianCSharp\bin\Debug\"
+                ReferencePath = "..\..\bin\Debug\"
             >
                 <Platform Name = "Windows CE" />
                 <Config

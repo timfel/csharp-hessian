@@ -3,7 +3,7 @@
     <LastOpenVersion>7.10.3077</LastOpenVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ReferencePath>E:\projekte\hessian\c#\trunk\HessianNet\HessianCSharp\bin\Debug\</ReferencePath>
+    <ReferencePath>..\..\bin\Debug\</ReferencePath>
     <CopyProjectDestinationFolder>
     </CopyProjectDestinationFolder>
     <CopyProjectUncPath>

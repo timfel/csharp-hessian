@@ -28,7 +28,7 @@
     </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>C:\Inetpub\wwwroot\HessianTest\bin\</OutputPath>
+    <OutputPath>bin\HessianTest\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -76,7 +76,7 @@
   <ItemGroup>
     <Reference Include="Hessiancsharp">
       <Name>Hessiancsharp</Name>
-      <HintPath>..\..\..\HessianCSharp\bin\Debug\Hessiancsharp.dll</HintPath>
+      <HintPath>..\..\..\bin\Debug\Hessiancsharp.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
