@@ -164,7 +164,7 @@ namespace hessiancsharp.client
                             WebRequest webRequest = SendRequest(request, out sOutStream);
                             result = ReadReply(webRequest, methodInfo, out sInStream, out totalBytesRead);
                         }
-                        catch (Exception e2)
+                        catch (Exception)
                         {
                             // retry again (last time)
                             WebRequest webRequest = SendRequest(request, out sOutStream);
