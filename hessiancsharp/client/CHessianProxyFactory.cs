@@ -53,8 +53,9 @@ namespace hessiancsharp.client
 
         private string m_password;
         private string m_username;
+        #if !COMPACT_FRAMEWORK
         private WebProxy m_webproxy;
-
+        #endif
         #endregion
 
         #region Contructors
@@ -70,12 +71,14 @@ namespace hessiancsharp.client
             m_password = password;
         }
 
+        #if !COMPACT_FRAMEWORK
         public CHessianProxyFactory(string username, string password, WebProxy webproxy)
         {
             m_username = username;
             m_password = password;
             m_webproxy = webproxy;
         }
+        #endif
 		#endregion
 
 		#region PROPERTIES

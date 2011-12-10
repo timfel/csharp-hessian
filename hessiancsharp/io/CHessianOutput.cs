@@ -36,7 +36,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.IO;
 #endregion
 
@@ -59,7 +59,7 @@ namespace hessiancsharp.io
 		/// <summary>
 		/// map of references
 		/// </summary>
-		private Hashtable m_htRefs;
+		private Dictionary<Object, Object> m_htRefs;
 		#endregion
 
 		#region CONSTRUCTORS
@@ -656,10 +656,10 @@ namespace hessiancsharp.io
 		{
 			if (m_htRefs == null) 
 			{
-				m_htRefs = new Hashtable();
+				m_htRefs = new Dictionary<Object, Object>();
 			}
 			
-			if (m_htRefs.Contains(objReference)) 
+			if (m_htRefs.ContainsKey(objReference)) 
 			{
 				int t_ref = (int) m_htRefs[objReference];
 				int value = t_ref;
@@ -702,7 +702,7 @@ namespace hessiancsharp.io
 		/// <returns>True, if the refernece was successfully replaced, otherwiese False</returns>
 		public override bool ReplaceRef(object objOldReference, object objNewReference) 
 		{			
-			if (m_htRefs.Contains(objOldReference)) 
+			if (m_htRefs.ContainsKey(objOldReference)) 
 			{				
 				int value = (int) m_htRefs[objNewReference];
 				m_htRefs.Remove(objOldReference);

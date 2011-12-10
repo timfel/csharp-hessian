@@ -37,7 +37,7 @@
 #region NAMESPACES
 using System;
 using System.Collections;
-
+using System.Collections.Generic;
 #endregion
 namespace hessiancsharp.io
 {
@@ -167,16 +167,16 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadInt());
+							list.Add(abstractHessianInput.ReadInt());
 
 						abstractHessianInput.ReadEnd();
         
-						int []arrData = new int[arrayList.Count];
+						int []arrData = new int[list.Count];
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = (int) arrayList[i];
+							arrData[i] = (int) list[i];
 							
         
 						abstractHessianInput.AddRef(arrData);
@@ -202,16 +202,16 @@ namespace hessiancsharp.io
                     }
                     else
                     {
-                        ArrayList arrayList = new ArrayList();
+                        List<Object> list = new List<Object>();
 
                         while (!abstractHessianInput.IsEnd())
-                            arrayList.Add(abstractHessianInput.ReadInt());
+                            list.Add(abstractHessianInput.ReadInt());
 
                         abstractHessianInput.ReadEnd();
 
-                        sbyte[] arrData = new sbyte[arrayList.Count];
+                        sbyte[] arrData = new sbyte[list.Count];
                         for (int i = 0; i < arrData.Length; i++)
-                            arrData[i] = (sbyte)arrayList[i];
+                            arrData[i] = (sbyte)list[i];
 
 
                         abstractHessianInput.AddRef(arrData);
@@ -236,17 +236,17 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadString());
+							list.Add(abstractHessianInput.ReadString());
 
 						abstractHessianInput.ReadEnd();
         
-						string []arrData = new String[arrayList.Count];
+						string []arrData = new String[list.Count];
 						abstractHessianInput.AddRef(arrData);
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = (string) arrayList[i];
+							arrData[i] = (string) list[i];
 							
 
 						return arrData;
@@ -272,19 +272,19 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadBoolean());
+							list.Add(abstractHessianInput.ReadBoolean());
 
 						abstractHessianInput.ReadEnd();
 				        
-						bool []arrData = new bool[arrayList.Count];
+						bool []arrData = new bool[list.Count];
 				        
 						abstractHessianInput.AddRef(arrData);
 				        
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = (bool) arrayList[i];
+							arrData[i] = (bool) list[i];
 						return arrData;
 					}
 				}
@@ -306,16 +306,16 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add((short) abstractHessianInput.ReadInt());
+							list.Add((short) abstractHessianInput.ReadInt());
 
 						abstractHessianInput.ReadEnd();
 				        
-						short []arrData = new short[arrayList.Count];
+						short []arrData = new short[list.Count];
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = (short) arrayList[i];
+							arrData[i] = (short) list[i];
 							
 						abstractHessianInput.AddRef(arrData);
 				        
@@ -342,16 +342,16 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadLong());
+							list.Add(abstractHessianInput.ReadLong());
 
 						abstractHessianInput.ReadEnd();
 				        
-						long []arrData = new long[arrayList.Count];
+						long []arrData = new long[list.Count];
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = (long) arrayList[i];
+							arrData[i] = (long) list[i];
 				        
 						abstractHessianInput.AddRef(arrData);
 
@@ -375,16 +375,16 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadDouble());
+							list.Add(abstractHessianInput.ReadDouble());
 
 						abstractHessianInput.ReadEnd();
 				        
-						float []arrData = new float[arrayList.Count];
+						float []arrData = new float[list.Count];
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = (float) arrayList[i];							
+							arrData[i] = (float) list[i];							
 				        
 						abstractHessianInput.AddRef(arrData);
 
@@ -408,17 +408,17 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadDouble());
+							list.Add(abstractHessianInput.ReadDouble());
 
 						abstractHessianInput.ReadEnd();
 				        
-						double []data = new double[arrayList.Count];
+						double []data = new double[list.Count];
 						abstractHessianInput.AddRef(data);
 						for (int i = 0; i < data.Length; i++)
-							data[i] = (double) arrayList[i];	
+							data[i] = (double) list[i];	
 							
 
 						return data;
@@ -443,18 +443,18 @@ namespace hessiancsharp.io
 					}
 					else 
 					{
-						ArrayList arrayList = new ArrayList();
+						List<Object> list = new List<Object>();
 				        
-						abstractHessianInput.AddRef(arrayList); // XXX: potential issues here
+						abstractHessianInput.AddRef(list); // XXX: potential issues here
 
 						while (! abstractHessianInput.IsEnd())
-							arrayList.Add(abstractHessianInput.ReadObject());
+							list.Add(abstractHessianInput.ReadObject());
 
 						abstractHessianInput.ReadEnd();
 				        
-						object []arrData = new Object[arrayList.Count];
+						object []arrData = new Object[list.Count];
 						for (int i = 0; i < arrData.Length; i++)
-							arrData[i] = arrayList[i];
+							arrData[i] = list[i];
 
 						return arrData;
 					}

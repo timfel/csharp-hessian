@@ -35,7 +35,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.Threading;
 #endregion
 
@@ -74,13 +74,13 @@ namespace hessiancsharp.io
 		{
 			IDictionary dictionary = null;
             if ((m_type == null) || (m_type.IsInterface && typeof(IDictionary).IsAssignableFrom(m_type)))
-				dictionary = new Hashtable();
-			else if (m_type.Equals(typeof(Hashtable)))
-				dictionary = new Hashtable();
+				dictionary = new Dictionary<Object, Object>();
+			else if (m_type.Equals(typeof(Dictionary<Object, Object>)))
+				dictionary = new Dictionary<Object, Object>();
 			else 
 			{
 				//dictionary = (IDictionary)Activator.CreateInstance(m_type);
-                dictionary = new Hashtable();
+                dictionary = new Dictionary<Object, Object>();
 				
 			}
 			abstractHessianInput.AddRef(dictionary);

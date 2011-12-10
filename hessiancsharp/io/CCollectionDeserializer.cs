@@ -87,7 +87,7 @@ namespace hessiancsharp.io
 		/// </summary>
 		/// <param name="abstractHessianInput">HessianInput - Instance</param>
 		/// <param name="intListLength">Length of the list</param>
-		/// <returns>Return value is always an ArrayList - Instance, 
+		/// <returns>Return value is always an List<Object> - Instance, 
 		/// apart from StringCollection - Instances</returns>
 		public override System.Object ReadList(AbstractHessianInput abstractHessianInput, int intListLength)
 		{
@@ -128,7 +128,7 @@ namespace hessiancsharp.io
 
         private Object ReadUntypedList(AbstractHessianInput abstractHessianInput)
         {
-            IList listResult = new ArrayList();
+            IList listResult = new List<Object>();
             abstractHessianInput.AddRef(listResult);
             while (!abstractHessianInput.IsEnd())
                 listResult.Add(abstractHessianInput.ReadObject());

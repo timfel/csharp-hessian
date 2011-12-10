@@ -38,7 +38,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -55,27 +55,27 @@ namespace hessiancsharp.io
 		/// <summary>
 		/// Map with deserializers
 		/// </summary>
-		private static Hashtable m_htDeserializerMap = null;
+		private static Dictionary<Object, Object> m_htDeserializerMap = null;
 
 		/// <summary>
 		/// Map with serializers
 		/// </summary>
-		private static Hashtable m_htSerializerMap = null;
+		private static Dictionary<Object, Object> m_htSerializerMap = null;
 
 		/// <summary>
 		/// Map with type names
 		/// </summary>
-		private static Hashtable m_htTypeMap = null;
+		private static Dictionary<Object, Object> m_htTypeMap = null;
 
 		/// <summary>
 		/// Cache for serializer
 		/// </summary>
-		private static Hashtable m_htCachedSerializerMap = null;
+		private static Dictionary<Object, Object> m_htCachedSerializerMap = null;
 
 		/// <summary>
 		/// Cache for deserializer
 		/// </summary>
-		private static Hashtable m_htCachedDeserializerMap = null;		
+		private static Dictionary<Object, Object> m_htCachedDeserializerMap = null;		
 
 		#endregion
 		
@@ -94,9 +94,9 @@ namespace hessiancsharp.io
 		/// </summary>
 		static CSerializerFactory()
 		{
-			m_htDeserializerMap = new Hashtable();
-			m_htSerializerMap = new Hashtable();
-			m_htTypeMap = new Hashtable();
+			m_htDeserializerMap = new Dictionary<Object, Object>();
+			m_htSerializerMap = new Dictionary<Object, Object>();
+			m_htTypeMap = new Dictionary<Object, Object>();
 			addBasic(typeof (char), "char", CSerializationConstants.CHARACTER);
 			addBasic(typeof (byte), "byte", CSerializationConstants.BYTE);
 			addBasic(typeof (sbyte), "sbyte", CSerializationConstants.SBYTE);
@@ -120,8 +120,8 @@ namespace hessiancsharp.io
             addBasic(typeof(sbyte[]), "[sbyte", CSerializationConstants.SBYTE_ARRAY);
 			addBasic(typeof(DateTime),"date",CSerializationConstants.DATE);
 			//addBasic(typeof(Object[]), "[object", BasicSerializer.OBJECT_ARRAY);
-			m_htCachedDeserializerMap = new Hashtable();
-			m_htCachedSerializerMap = new Hashtable();
+			m_htCachedDeserializerMap = new Dictionary<Object, Object>();
+			m_htCachedSerializerMap = new Dictionary<Object, Object>();
             m_htSerializerMap.Add(typeof(System.Decimal), new CStringValueSerializer());
 
             m_htDeserializerMap.Add(typeof(System.Decimal), new CDecimalDeserializer());
@@ -139,7 +139,7 @@ namespace hessiancsharp.io
 		
 		#region PRIVATE_METHODS
 		/// <summary>
-		/// Adds basic serializers to the Hashtables
+		/// Adds basic serializers to the Dictionary<Object, Object>s
 		/// </summary>
 		/// <param name="type">Type of the instances for de/serialization</param>
 		/// <param name="strTypeName">Type name of the instances for de/serialization</param>
@@ -346,7 +346,7 @@ namespace hessiancsharp.io
 		/// <returns>List of all files as string </returns>
 		private IList AllAssamblyNamesInCurrentDirectory() 
 		{
-			ArrayList result = new ArrayList();			
+			List<Object> result = new List<Object>();			
 
 			string currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName);
 
@@ -400,7 +400,7 @@ namespace hessiancsharp.io
 
 
 		/// <summary>
-		/// Reads the object as a map. (Hashtable)
+		/// Reads the object as a map. (Dictionary<Object, Object>)
 		/// </summary>
 		/// <param name="abstractHessianInput">HessianInput instance to read from</param>
 		/// <param name="strType">Type of the map (can be null)</param>
@@ -411,7 +411,7 @@ namespace hessiancsharp.io
 
 			if (abstractDeserializer == null)
 			{
-				abstractDeserializer = new CMapDeserializer(typeof (Hashtable));
+				abstractDeserializer = new CMapDeserializer(typeof (Dictionary<Object, Object>));
 			}
 			return abstractDeserializer.ReadMap(abstractHessianInput);
 		}
@@ -429,7 +429,7 @@ namespace hessiancsharp.io
 				return abstractDeserializer;
 			else
 			{
-				return new CMapDeserializer(typeof (Hashtable));
+				return new CMapDeserializer(typeof (Dictionary<Object, Object>));
 			}
 		}
 
@@ -447,7 +447,7 @@ namespace hessiancsharp.io
 			if (abstractDeserializer != null)
 				return abstractDeserializer.ReadList(abstractHessianInput, intLength);
 			else
-				return new CCollectionDeserializer(typeof (ArrayList)).ReadList(
+				return new CCollectionDeserializer(typeof (List<Object>)).ReadList(
 					abstractHessianInput,
 					intLength);
 		}

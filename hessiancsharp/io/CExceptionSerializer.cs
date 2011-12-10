@@ -1,21 +1,21 @@
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.Reflection;
 
 namespace hessiancsharp.io
 {
 	public class CExceptionSerializer : CObjectSerializer
 	{
-		private ArrayList m_serFields = new ArrayList();
+		private List<Object> m_serFields = new List<Object>();
 		public CExceptionSerializer():base(typeof(Exception))
 		{
 			m_serFields = GetSerializableFields();
 		}
 
-		public static ArrayList GetSerializableFields()
+		public static List<Object> GetSerializableFields()
 		{
 			Type type = typeof(Exception);
-			ArrayList serFields = new ArrayList();
+			List<Object> serFields = new List<Object>();
 			FieldInfo [] fields = type.GetFields(BindingFlags.Public|
 												BindingFlags.Instance|
 												BindingFlags.NonPublic|
@@ -34,7 +34,7 @@ namespace hessiancsharp.io
 			return serFields;
 		}
 
-		public override ArrayList GetSerializableFieldList()
+		public override List<Object> GetSerializableFieldList()
 		{
 			return m_serFields;
 		}

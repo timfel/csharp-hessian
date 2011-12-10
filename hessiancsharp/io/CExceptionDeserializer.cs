@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.Reflection;
 
 namespace hessiancsharp.io
@@ -9,11 +9,11 @@ namespace hessiancsharp.io
 	/// </summary>
 	public class CExceptionDeserializer : CObjectDeserializer
 	{
-		private IDictionary m_deserFields = new Hashtable();
+		private IDictionary m_deserFields = new Dictionary<Object, Object>();
 		private Type m_type = null;
 		public CExceptionDeserializer(Type type):base(type)
 		{
-			ArrayList fieldList = CExceptionSerializer.GetSerializableFields();
+			List<Object> fieldList = CExceptionSerializer.GetSerializableFields();
 			foreach (FieldInfo fieldInfo in fieldList)
 			{
 				m_deserFields[fieldInfo.Name] = fieldInfo;
@@ -28,7 +28,7 @@ namespace hessiancsharp.io
 
 		public override object ReadMap(AbstractHessianInput abstractHessianInput)
 		{
-			Hashtable fieldValueMap = new Hashtable();
+			Dictionary<Object, Object> fieldValueMap = new Dictionary<Object, Object>();
 			string _message = null;
 			Exception _innerException = null;
 			while (! abstractHessianInput.IsEnd()) 
@@ -113,7 +113,7 @@ namespace hessiancsharp.io
 			{
 				result = new Exception(_message, _innerException);
 			}
-			foreach (DictionaryEntry entry in fieldValueMap)
+			foreach (KeyValuePair<object, object> entry in fieldValueMap)
 			{
 				FieldInfo fieldInfo = (FieldInfo) entry.Key;
 				object value = entry.Value;

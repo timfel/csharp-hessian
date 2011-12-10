@@ -36,7 +36,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.Reflection;
 #endregion
 
@@ -57,7 +57,7 @@ namespace hessiancsharp.io
 		/// <summary>
 		/// Hashmap with class fields (&lt;field name&gt;&lt;field info instance&gt;)
 		/// </summary>
-		private Hashtable m_htFields = new Hashtable();
+		private Dictionary<Object, Object> m_htFields = new Dictionary<Object, Object>();
 		#endregion
 		#region CONSTRUCTORS
 		/// <summary>

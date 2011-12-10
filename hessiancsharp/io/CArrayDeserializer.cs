@@ -35,7 +35,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 #endregion
 
 namespace hessiancsharp.io
@@ -117,7 +117,7 @@ namespace hessiancsharp.io
 			}
 			else
 			{
-				ArrayList colList = new ArrayList();
+				List<Object> colList = new List<Object>();
 				abstractHessianInput.AddRef(colList);
 				if (m_componentType != null)
 				{

@@ -35,7 +35,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 using System.Reflection;
 #endregion
 
@@ -52,7 +52,7 @@ namespace hessiancsharp.io
 		/// <summary>
 		/// Fields of the objectType
 		/// </summary>
-		private ArrayList m_alFields = new ArrayList();
+		private List<Object> m_alFields = new List<Object>();
 		#endregion
 		#region CONSTRUCTORS
 		/// <summary>
@@ -97,7 +97,7 @@ namespace hessiancsharp.io
                 return;
             Type type = obj.GetType();
             abstractHessianOutput.WriteMapBegin(type.FullName);
-            ArrayList serFields = GetSerializableFieldList();
+            List<Object> serFields = GetSerializableFieldList();
             for (int i = 0; i < serFields.Count; i++)
             {
                 FieldInfo field = (FieldInfo)serFields[i];
@@ -107,7 +107,7 @@ namespace hessiancsharp.io
             abstractHessianOutput.WriteMapEnd();
         }
 
-        public virtual ArrayList GetSerializableFieldList()
+        public virtual List<Object> GetSerializableFieldList()
         {
             return m_alFields;
         }

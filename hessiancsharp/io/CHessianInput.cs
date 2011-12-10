@@ -37,7 +37,7 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 #endregion
 
 namespace hessiancsharp.io 
@@ -83,7 +83,7 @@ namespace hessiancsharp.io
 		/// <summary>
 		/// Array with object references
 		/// </summary>
-		private ArrayList m_arrRefs;
+		private List<Object> m_arrRefs;
 
         private IDictionary m_deserializers;
 
@@ -136,7 +136,7 @@ namespace hessiancsharp.io
         private Exception PrepareFault()
         {
             Exception exp = null;
-            Hashtable htFault = this.ReadFault();
+            Dictionary<Object, Object> htFault = this.ReadFault();
             object objDetail = htFault["detail"];
             string strMessage = (String)htFault["message"];
             string exceptionMessage = strMessage;
@@ -181,9 +181,9 @@ namespace hessiancsharp.io
 		/// </summary>
 		/// <exception cref="CHessianException"/>
 		/// <returns>HashMap with fault details</returns>
-		private Hashtable ReadFault()			
+		private Dictionary<Object, Object> ReadFault()			
 		{
-			Hashtable htFault = new Hashtable();
+			Dictionary<Object, Object> htFault = new Dictionary<Object, Object>();
 
 			int intCode = Read();
 			for (; intCode > 0 && intCode != 'z'; intCode = Read()) 
@@ -223,6 +223,7 @@ namespace hessiancsharp.io
 			}
 			return intResult;
 		}
+        #if !COMPACT_FRAMEWORK
 		/// <summary>
 		/// Reads string from stream and builds Xml - Node
 		/// </summary>
@@ -251,6 +252,7 @@ namespace hessiancsharp.io
 			}
 			return xnodResult;
 		}
+        #endif
 
 		///<summary>
 		/// Reads a character from the underlying stream.
@@ -400,7 +402,7 @@ namespace hessiancsharp.io
 			this.m_intChunkLength = 0;
 			this.m_intPeek = -1;
 			this.m_arrRefs = null;
-            this.m_deserializers = new Hashtable(100);
+            this.m_deserializers = new Dictionary<Object, Object>(100);
 
 			if (base.m_serializerFactory == null) 
 			{
@@ -490,6 +492,7 @@ namespace hessiancsharp.io
 				{
 					throw new CHessianException("remote type is not implemented");
 				}
+#if !COMPACT_FRAMEWORK
 				case PROT_XML_INITIAL:
 				case PROT_XML_FINAL: 
 				{
@@ -497,6 +500,7 @@ namespace hessiancsharp.io
 					m_intChunkLength = (Read() << 8) + Read();
 					return parseXML();
 				}
+#endif
 				case PROT_BINARY_START:
 				case PROT_BINARY_END: 
 				{
@@ -956,7 +960,7 @@ namespace hessiancsharp.io
 		public override int AddRef(Object obj) 
 		{
 			if (m_arrRefs == null)
-				m_arrRefs = new ArrayList();
+				m_arrRefs = new List<Object>();
 			
 			m_arrRefs.Add(obj);
 

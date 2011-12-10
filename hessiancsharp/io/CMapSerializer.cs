@@ -35,7 +35,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 #endregion
 
 namespace hessiancsharp.io
@@ -60,7 +60,7 @@ namespace hessiancsharp.io
 			
 
 			Type mapType = obj.GetType();
-			if (mapType.Equals(typeof(Hashtable)) )
+			if (mapType.Equals(typeof(Dictionary<Object, Object>)) )
 			{
 				abstractHessianOutput.WriteMapBegin(null);
 			}

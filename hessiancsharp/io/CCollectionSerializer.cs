@@ -35,7 +35,7 @@
 
 #region NAMESPACES
 using System;
-using System.Collections;
+using System.Collections; using System.Collections.Generic;
 #endregion
 
 namespace hessiancsharp.io
@@ -60,7 +60,7 @@ namespace hessiancsharp.io
 			
 			ICollection collection = ( ICollection) objList;
 			Type type = objList.GetType();
-			if (type.Equals(typeof(ArrayList)))
+			if (type.Equals(typeof(List<Object>)))
 				abstractHessianOutput.WriteListBegin(collection.Count, null);
 			else
 				abstractHessianOutput.WriteListBegin(collection.Count, objList.GetType().FullName);
