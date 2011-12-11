@@ -12,7 +12,8 @@ namespace Server {
 		/// </summary>
 		[STAThread]
 		private static void Main(string[] args) {
-			CWebServer web = new CWebServer(5667, "/test/hessiantest.hessian", typeof (CHessianTest));
+			CWebServer web = new CHessianWebServer();
+            
 			web.Paranoid = true;
 			web.AcceptClient("[\\d\\s]");
 			web.Run();
