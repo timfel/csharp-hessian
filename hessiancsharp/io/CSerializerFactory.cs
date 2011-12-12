@@ -162,39 +162,41 @@ namespace hessiancsharp.io
 		/// <returns>Serializer - Instance</returns>
 		public AbstractSerializer GetSerializer(Type type)
 		{
-			AbstractSerializer abstractSerializer = (AbstractSerializer) m_htSerializerMap[type];
-			if (abstractSerializer == null)
-			{
+            object val;
+			AbstractSerializer abstractSerializer = null;
+            if (!m_htSerializerMap.TryGetValue(type, out val))
+            {
                 // TODO: Serialisieren von Nullbaren Typen und generischen
                 // Listen
-				if (typeof (IDictionary).IsAssignableFrom(type))
-				{
-					abstractSerializer = new CMapSerializer();
-				}
-				else if (typeof (IList).IsAssignableFrom(type))
-				{
-					abstractSerializer = new CCollectionSerializer();
-				}else if (typeof (Stream).IsAssignableFrom(type))
-				{
-					abstractSerializer = new CInputStreamSerializer();
-				}
+                if (typeof(IDictionary).IsAssignableFrom(type))
+                {
+                    abstractSerializer = new CMapSerializer();
+                }
+                else if (typeof(IList).IsAssignableFrom(type))
+                {
+                    abstractSerializer = new CCollectionSerializer();
+                }
+                else if (typeof(Stream).IsAssignableFrom(type))
+                {
+                    abstractSerializer = new CInputStreamSerializer();
+                }
                 else if (typeof(Exception).IsAssignableFrom(type))
                 {
                     abstractSerializer = new CExceptionSerializer();
-                }	
-				else if (type.IsArray)
-				{
-					abstractSerializer = new CArraySerializer();
-				}
+                }
+                else if (type.IsArray)
+                {
+                    abstractSerializer = new CArraySerializer();
+                }
                 else if (type.IsEnum)
                 {
                     abstractSerializer = new CEnumSerializer();
                 }
                 else
                 {
-                    if (m_htCachedSerializerMap[type.FullName] != null)
+                    if (m_htCachedSerializerMap.TryGetValue(type.FullName, out val))
                     {
-                        abstractSerializer = (AbstractSerializer)m_htCachedSerializerMap[type.FullName];
+                        abstractSerializer = (AbstractSerializer)val;
                     }
                     else
                     {
@@ -204,7 +206,11 @@ namespace hessiancsharp.io
                     }
 
                 }
-			}
+            }
+            else
+            {
+                abstractSerializer = (AbstractSerializer)val;
+            }
 			return abstractSerializer;
 		}
 
@@ -215,9 +221,10 @@ namespace hessiancsharp.io
 		/// <returns>Deserializer instance</returns>
 		public AbstractDeserializer GetDeserializer(Type type)
 		{
-			AbstractDeserializer abstractDeserializer = (AbstractDeserializer) m_htDeserializerMap[type];
-			if (abstractDeserializer == null)
-			{
+            object val;
+            AbstractDeserializer abstractDeserializer = null;
+            if (!m_htDeserializerMap.TryGetValue(type, out val))
+            {
                 if (typeof(IDictionary).IsAssignableFrom(type))
                 {
                     abstractDeserializer = new CMapDeserializer(type);
@@ -246,9 +253,9 @@ namespace hessiancsharp.io
                 }
                 else
                 {
-                    if (m_htCachedDeserializerMap[type.FullName] != null)
+                    if (m_htCachedDeserializerMap.TryGetValue(type.FullName, out val))
                     {
-                        abstractDeserializer = (AbstractDeserializer)m_htCachedDeserializerMap[type.FullName];
+                        abstractDeserializer = (AbstractDeserializer)val;
                     }
                     else
                     {
@@ -257,7 +264,11 @@ namespace hessiancsharp.io
 
                     }
                 }
-			}
+            }
+            else
+            {
+                abstractDeserializer = (AbstractDeserializer)val;
+            }
 			return abstractDeserializer;
 
 		}

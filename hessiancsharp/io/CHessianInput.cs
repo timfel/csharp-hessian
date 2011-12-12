@@ -137,16 +137,18 @@ namespace hessiancsharp.io
         {
             Exception exp = null;
             Dictionary<Object, Object> htFault = this.ReadFault();
-            object objDetail = htFault["detail"];
-            string strMessage = (String)htFault["message"];
-            string exceptionMessage = strMessage;
+            object objDetail;
+            htFault.TryGetValue("detail", out objDetail);
+            object strMessage;
+            htFault.TryGetValue("message", out strMessage);
+            string exceptionMessage = (String)strMessage;
             if (objDetail != null && typeof(Exception).IsAssignableFrom(objDetail.GetType()))
             {
                 exp = objDetail as Exception;
             }
             else
             {
-                exp = new CHessianException(strMessage);
+                exp = new CHessianException(exceptionMessage);
             }
             return exp;
         }
