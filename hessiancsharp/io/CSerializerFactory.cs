@@ -42,6 +42,9 @@ using System.Collections; using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
+#if SILVERLIGHT
+using System.Windows;
+#endif
 #endregion
 namespace hessiancsharp.io
 {
@@ -80,10 +83,28 @@ namespace hessiancsharp.io
 		#endregion
 		
 		#if COMPACT_FRAMEWORK
+		#if SILVERLIGHT
+        // We cannot access Deployment.Current.Parts later, because of possible Thread boundaries
+        // Instead, just execute this code at class loading time and be done with it
+        private static IList m_assamblyFiles = m_i_assemblyFiles;
+        private static IList m_i_assemblyFiles
+        {
+            get
+            {
+                IList l = new List<string>();
+                foreach (AssemblyPart a in Deployment.Current.Parts)
+                {
+                    l.Add(a.Source.Substring(0, a.Source.IndexOf(".dll")));
+                }
+                return l;
+            }
+        }
+        #else
 		/// <summary>
 		/// List of all files in current directory with extension ".exe" and ".dll"
 		/// </summary>
 		private IList m_assamblyFiles = null; 		
+		#endif
 		#endif
 		
 
@@ -303,7 +324,12 @@ namespace hessiancsharp.io
 				// do CF stuff
 				if (m_assamblyFiles == null) 
 				{
+                    //#if SILVERLIGHT
+                    //CAssemblyPartAccessor ass = CAsyncHessianMethodCaller.assemblyPartAccessor;
+                    //m_assamblyFiles = ass.AssemblyParts;
+                    //#else
 					m_assamblyFiles = AllAssamblyNamesInCurrentDirectory();
+                    //#endif
 				}
 				foreach(string ass in m_assamblyFiles) 
 				{
