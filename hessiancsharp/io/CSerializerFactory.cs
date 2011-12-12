@@ -273,12 +273,12 @@ namespace hessiancsharp.io
 				return null;
 
 			AbstractDeserializer abstractDeserializer = null;
+			object val = null;
 
-			abstractDeserializer = (AbstractDeserializer) m_htTypeMap[strType];
-			if (abstractDeserializer != null)
+			if (m_htTypeMap.TryGetValue(strType, out val))
 			{
-				return abstractDeserializer;
-			}			
+				return (AbstractDeserializer)val;
+			}
 
 			if (strType.StartsWith("["))
 			{
