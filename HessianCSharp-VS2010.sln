@@ -10,18 +10,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClient", "ExamplesTests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServer", "ExamplesTests\HessianServerTest\Server\TestServer.csproj", "{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyTestClient", "ExamplesTests\HessianTinyServerTest\Client\TinyTestClient.csproj", "{FF3E5C2B-8E8E-4AC8-ABAC-CA9F369F04BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HessianCSharpTests", "HessianCSharpTests\HessianCSharpTests.csproj", "{AFC6388D-9E04-481B-9E31-43C3D59F017A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyTestServer", "ExamplesTests\HessianTinyServerTest\Server\TinyTestServer.csproj", "{E4BCC1ED-C1FC-4C39-AE3A-00E6ECEC186D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66AB6076-9698-421F-9B79-9451637DF913}"
+	ProjectSection(SolutionItems) = preProject
+		HessianCSharp-VS2010.vsmdi = HessianCSharp-VS2010.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = HessianCSharp-VS2010.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19B2C16E-FCE6-416C-854E-1C5F8627C9F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -40,14 +48,10 @@ Global
 		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF3E5C2B-8E8E-4AC8-ABAC-CA9F369F04BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF3E5C2B-8E8E-4AC8-ABAC-CA9F369F04BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF3E5C2B-8E8E-4AC8-ABAC-CA9F369F04BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF3E5C2B-8E8E-4AC8-ABAC-CA9F369F04BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4BCC1ED-C1FC-4C39-AE3A-00E6ECEC186D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4BCC1ED-C1FC-4C39-AE3A-00E6ECEC186D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4BCC1ED-C1FC-4C39-AE3A-00E6ECEC186D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4BCC1ED-C1FC-4C39-AE3A-00E6ECEC186D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
