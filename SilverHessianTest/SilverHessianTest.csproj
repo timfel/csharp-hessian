@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AFC6388D-9E04-481B-9E31-43C3D59F017A}</ProjectGuid>
+    <ProjectGuid>{E06884BE-1274-4C31-920A-B33F83DD092D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HessianCSharpTests</RootNamespace>
-    <AssemblyName>HessianCSharpTests</AssemblyName>
+    <RootNamespace>SilverHessianTest</RootNamespace>
+    <AssemblyName>SilverHessianTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -33,15 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -49,20 +44,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CHessianMethodCallerTest.cs" />
-    <Compile Include="CHessianProxyFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmasInterface.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HessianCSharp.csproj">
-      <Project>{981C2E02-11B4-49DA-A462-48C9AC1FD095}</Project>
-      <Name>HessianCSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SilverHessian.csproj">
-      <Project>{A56BE294-6746-4B87-BCDF-9BDC685A8D5C}</Project>
-      <Name>SilverHessian</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
