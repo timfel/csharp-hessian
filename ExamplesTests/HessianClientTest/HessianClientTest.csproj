@@ -79,10 +79,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hessiancsharp">
-      <Name>Hessiancsharp</Name>
-      <HintPath>..\..\bin\Debug\Hessiancsharp.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -134,6 +130,12 @@
     <Compile Include="hessiancsharp\test\TestMathService.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HessianCSharp.csproj">
+      <Project>{981C2E02-11B4-49DA-A462-48C9AC1FD095}</Project>
+      <Name>HessianCSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
