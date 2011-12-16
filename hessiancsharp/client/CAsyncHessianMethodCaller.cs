@@ -67,6 +67,10 @@ namespace hessiancsharp.client
             DateTime end = DateTime.Now;
             CHessianLog.AddLogEntry(call.methodInfo.Name, end, end, -1, -1);
 
+            // Make it easier for the GC
+            call.methodArgs = null;
+            call.methodInfo = null;
+            call.request = null;
             call.callback.Invoke(call);
         }
 
@@ -99,11 +103,15 @@ namespace hessiancsharp.client
             if (response.StatusCode != HttpStatusCode.OK)
                 ReadAndThrowHttpFault(response);
 
-            using (Stream stream = response.GetResponseStream())
-            {
-                AbstractHessianInput hessianInput = GetHessianInput(stream);
-                call.result = hessianInput.ReadReply(call.methodInfo.ReturnType);
-                response.Close();
+            try {
+                using (Stream stream = response.GetResponseStream()) {
+                    AbstractHessianInput hessianInput = GetHessianInput(stream);
+                    call.result = hessianInput.ReadReply(call.methodInfo.ReturnType);
+                    response.Close();
+                }
+            } catch (CHessianException e) {
+                call.result = null;
+                call.exception = e.InnerException;
             }
 
             EndHessianMethodCall(call);
