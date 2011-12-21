@@ -1,8 +1,13 @@
 HessianC#
 
-For further information log on to
-http://www.hessiancsharp.org
+Forked from http://www.hessiancsharp.org
 
+**********************************************************************************
+Release Version 1.4.0
+Release Date: 2011-12-21
+**********************************************************************************
+- Convert RCS history to Git
+- Add a Silverlight implementation
 
 **********************************************************************************
 Release Version 1.3.2
