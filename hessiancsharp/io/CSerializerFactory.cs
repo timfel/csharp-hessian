@@ -324,12 +324,7 @@ namespace hessiancsharp.io
 				// do CF stuff
 				if (m_assamblyFiles == null) 
 				{
-                    //#if SILVERLIGHT
-                    //CAssemblyPartAccessor ass = CAsyncHessianMethodCaller.assemblyPartAccessor;
-                    //m_assamblyFiles = ass.AssemblyParts;
-                    //#else
 					m_assamblyFiles = AllAssamblyNamesInCurrentDirectory();
-                    //#endif
 				}
 				foreach(string ass in m_assamblyFiles) 
 				{
