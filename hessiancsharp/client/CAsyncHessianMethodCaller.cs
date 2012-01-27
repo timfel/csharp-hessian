@@ -99,11 +99,11 @@ namespace hessiancsharp.client
         private void EndReadReply(IAsyncResult asyncResult)
         {
             HessianMethodCall call = (HessianMethodCall)asyncResult.AsyncState;
-            HttpWebResponse response = (HttpWebResponse)call.request.EndGetResponse(asyncResult);
-            if (response.StatusCode != HttpStatusCode.OK)
-                ReadAndThrowHttpFault(response);
-
             try {
+                HttpWebResponse response = (HttpWebResponse)call.request.EndGetResponse(asyncResult);
+                if (response.StatusCode != HttpStatusCode.OK)
+                    ReadAndThrowHttpFault(response);
+
                 using (Stream stream = response.GetResponseStream()) {
                     AbstractHessianInput hessianInput = GetHessianInput(stream);
                     call.result = hessianInput.ReadReply(call.methodInfo.ReturnType);
@@ -112,6 +112,9 @@ namespace hessiancsharp.client
             } catch (CHessianException e) {
                 call.result = null;
                 call.exception = e.InnerException;
+            } catch (Exception e) {
+                call.result = null;
+                call.exception = e;
             }
 
             EndHessianMethodCall(call);
