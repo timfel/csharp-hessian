@@ -4,3 +4,7 @@ Backup*
 bin/
 obj/
 TestResults/
+_ReSharper.*
+*.sln.ide
+*.suo
+*.csproj.user

@@ -96,7 +96,11 @@ namespace hessiancsharp.io
             if (abstractHessianOutput.AddRef(obj))
                 return;
             Type type = obj.GetType();
-            abstractHessianOutput.WriteMapBegin(type.FullName);
+            string typeName = type.FullName;
+            object[] customAttributes = type.GetCustomAttributes(typeof(CTypeNameAttribute), false);
+            if (customAttributes.Length > 0)
+              typeName = ((CTypeNameAttribute)customAttributes[0]).Name;
+            abstractHessianOutput.WriteMapBegin(typeName);
             List<Object> serFields = GetSerializableFieldList();
             for (int i = 0; i < serFields.Count; i++)
             {
