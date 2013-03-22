@@ -1,0 +1,59 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66AB6076-9698-421F-9B79-9451637DF913}"
+	ProjectSection(SolutionItems) = preProject
+		HessianCSharp-VS2010.vsmdi = HessianCSharp-VS2010.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HessianCSharp", "HessianCSharp.csproj", "{981C2E02-11B4-49DA-A462-48C9AC1FD095}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HessianClientTest", "ExamplesTests\HessianClientTest\HessianClientTest.csproj", "{19B2C16E-FCE6-416C-854E-1C5F8627C9F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverHessian", "SilverHessian.csproj", "{A56BE294-6746-4B87-BCDF-9BDC685A8D5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClient", "ExamplesTests\HessianServerTest\Client\TestClient.csproj", "{1D7C5B9B-7F64-4F8A-BA93-041315E13A51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServer", "ExamplesTests\HessianServerTest\Server\TestServer.csproj", "{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HessianCSharpTests", "HessianCSharpTests\HessianCSharpTests.csproj", "{AFC6388D-9E04-481B-9E31-43C3D59F017A}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = HessianCSharp-VS2010.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981C2E02-11B4-49DA-A462-48C9AC1FD095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B2C16E-FCE6-416C-854E-1C5F8627C9F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19B2C16E-FCE6-416C-854E-1C5F8627C9F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B2C16E-FCE6-416C-854E-1C5F8627C9F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B2C16E-FCE6-416C-854E-1C5F8627C9F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56BE294-6746-4B87-BCDF-9BDC685A8D5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56BE294-6746-4B87-BCDF-9BDC685A8D5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56BE294-6746-4B87-BCDF-9BDC685A8D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56BE294-6746-4B87-BCDF-9BDC685A8D5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D7C5B9B-7F64-4F8A-BA93-041315E13A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7C5B9B-7F64-4F8A-BA93-041315E13A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7C5B9B-7F64-4F8A-BA93-041315E13A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7C5B9B-7F64-4F8A-BA93-041315E13A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBF7F358-374A-4CEA-A66C-4DC859FCB3B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFC6388D-9E04-481B-9E31-43C3D59F017A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
