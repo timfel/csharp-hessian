@@ -1,7 +1,7 @@
-/*
+﻿/*
 ***************************************************************************************************** 
 * HessianCharp - The .Net implementation of the Hessian Binary Web Service Protocol (www.caucho.com) 
-* Copyright (C) 2004-2005  by D. Minich, V. Byelyenkiy, A. Voltmann
+* Copyright (C) 2004-2005  by D. Minich, V. Byelyenkiy, A. Voltmann, M. Wuttke
 * http://www.hessiancsharp.com
 *
 * This library is free software; you can redistribute it and/or
@@ -27,52 +27,49 @@
 *
 *
 ******************************************************************************************************
-* Last change: 2011-03-31; mwuttke; Java UTC Date Conversion
-* Last change: 2005-08-14
-* By Andre Voltmann	
-* Licence added.
+* 2011-03-31 First version; wuttke
+* 2014-04-25 Gilles Meyer <gillesmy@gmail.com>
+*            Prefer UTC DateTime over LocalTime as internal DateTime representation.
+*            Leave the consumer free to interpret the DateTime as he wishes afterward.
 ******************************************************************************************************
 */
-#region NAMESPACES
+
 using System;
-using hessiancsharp.util;
-#endregion
 
-namespace hessiancsharp.io
+namespace hessiancsharp.util
 {
+
     /// <summary>
-    /// Serializing of DateTime - Instances.
+    /// Convert milliseconds since epoch defined by the hessian protocol 
+    /// (Java convention) into C# UTC DateTime object and vice-versa.
     /// </summary>
-    public class CDateSerializer : AbstractSerializer
+    public class DateTimeConverter
     {
+        // Offset in milliseconds between Hessian date time reference (January 1, 1970, 00:00:00 UTC)
+        // and C# date time reference (January 1, 0001 at 00:00:00.000)
+        private const long CSharpRefHessianRefOffsetMillis = 62135596800000;
 
-        #region PUBLIC_METHODS
+        // One millisecond equals 10^4 x 100 nanoseconds
+        // This is used to go from Hessian millisecond resolution to C# 100-nanosecond resolution and vice versa.
+        private const long MillisInHundredNanos = 10000;
+
         /// <summary>
-        /// Converts a C# DateTime object to a long value
-        /// that represents the java.util.Date.getTime() value.
+        /// Convert C#-UTC-DateTime Object to Java-UTC-Ticks
         /// </summary>
-        /// <param name="d"></param>
-        /// <returns></returns>
-        public static long MakeJavaDate(DateTime dt)
+        public static long ConvertUtcDateTimeToJavaUtcTicks(DateTime dt)
         {
-            return DateTimeConverter.ConvertUtcDateTimeToJavaUtcTicks(dt);
+            long utcJavaTicks = dt.Ticks / MillisInHundredNanos - CSharpRefHessianRefOffsetMillis;
+            return utcJavaTicks;
         }
 
         /// <summary>
-        /// Writes Instance of the DateTime class
+        /// Convert Java-UTC-Ticks into a C#-UTC-DateTime Object.
         /// </summary>
-        /// <param name="objDate">Instance of the DateTime class</param>
-        /// <param name="abstractHessianOutput">HessianOutput - Stream</param>
-        public override void WriteObject(Object objDate, AbstractHessianOutput abstractHessianOutput)
+        public static DateTime ConvertJavaUtcTicksToUtcDateTime(long utcTicks)
         {
-            if (objDate == null)
-                abstractHessianOutput.WriteNull();
-            else
-            {
-                abstractHessianOutput.WriteUTCDate(MakeJavaDate((DateTime)objDate));
-            }
+            long ticks = (utcTicks + CSharpRefHessianRefOffsetMillis) * MillisInHundredNanos;
+            return new DateTime(ticks, DateTimeKind.Utc);
         }
-        #endregion
 
     }
 }

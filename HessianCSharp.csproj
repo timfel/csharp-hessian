@@ -225,7 +225,7 @@
     <Compile Include="hessiancsharp\server\CHessianSkeleton.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hessiancsharp\util\JavaUtcConverter.cs" />
+    <Compile Include="hessiancsharp\util\DateTimeConverter.cs" />
     <Compile Include="hessiancsharp\webserver\CHessianWebServer.cs" />
     <Compile Include="hessiancsharp\webserver\CWebServer.cs">
       <SubType>Code</SubType>

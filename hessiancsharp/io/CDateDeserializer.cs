@@ -45,13 +45,13 @@ using hessiancsharp.util;
 
 namespace hessiancsharp.io
 {
-	/// <summary>
-	/// Date - Deserialization.
-	/// </summary>
-	public class CDateDeserializer:AbstractDeserializer
-	{
+    /// <summary>
+    /// Date - Deserialization.
+    /// </summary>
+    public class CDateDeserializer : AbstractDeserializer
+    {
 
-		#region PUBLIC_METHODS
+        #region PUBLIC_METHODS
         /// <summary>
         /// Makes a C# DateTime object from a Java ticks value
         /// from java.util.Date.getTime().
@@ -60,20 +60,20 @@ namespace hessiancsharp.io
         /// <returns></returns>
         public static DateTime MakeCSharpDate(long javaDate)
         {
-            return JavaUtcConverter.ConvertJavaUtcTicksToLocalDateTime(javaDate);
+            return DateTimeConverter.ConvertJavaUtcTicksToUtcDateTime(javaDate);
         }
 
-		/// <summary>
-		/// Reads date
-		/// </summary>
-		/// <param name="abstractHessianInput">HessianInput - Instance</param>
-		/// <returns>DateTime - Instance</returns>
-		public override object ReadObject(AbstractHessianInput abstractHessianInput)
-		{
+        /// <summary>
+        /// Reads date
+        /// </summary>
+        /// <param name="abstractHessianInput">HessianInput - Instance</param>
+        /// <returns>DateTime - Instance</returns>
+        public override object ReadObject(AbstractHessianInput abstractHessianInput)
+        {
             long javaTime = abstractHessianInput.ReadUTCDate();
             return MakeCSharpDate(javaTime);
-		}
-		#endregion
+        }
+        #endregion
 
-	}
+    }
 }
