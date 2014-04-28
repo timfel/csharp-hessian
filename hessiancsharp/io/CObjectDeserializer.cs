@@ -53,7 +53,7 @@ namespace hessiancsharp.io
 		/// <summary>
 		/// Object type
 		/// </summary>
-		private Type m_type;
+		private readonly Type m_type;
 		/// <summary>
 		/// Hashmap with class fields (&lt;field name&gt;&lt;field info instance&gt;)
 		/// </summary>
@@ -67,7 +67,7 @@ namespace hessiancsharp.io
 		/// deserialized</param>
 		public CObjectDeserializer(Type type)
 		{
-			this.m_type = type;
+			m_type = type;
 			for (; type!=null; type = type.BaseType) 
 			{
 				FieldInfo [] fields = type.GetFields(
@@ -111,16 +111,21 @@ namespace hessiancsharp.io
             #if COMPACT_FRAMEWORK
             object result = Activator.CreateInstance(this.m_type);				
             #else
-            object result = Activator.CreateInstance(this.m_type.Assembly.FullName, this.m_type.FullName).Unwrap();
-            //			object result = Activator.CreateInstance(this.m_type);
-            //			object result = null;
+            object result = Activator.CreateInstance(
+                m_type.Assembly.FullName,
+                m_type.FullName,
+                false,
+                BindingFlags.CreateInstance | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                null,
+                null,
+                null,
+                null,
+                null)
+                .Unwrap();
             #endif
 
-
             return ReadMap(abstractHessianInput, result);
-   
         }
-
 
 		/// <summary>
 		/// Reads map
